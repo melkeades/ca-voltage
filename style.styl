@@ -1,0 +1,28 @@
+
+[slider-cut] .w-dyn-item
+  display flex !important
+  //display block !important
+
+.splide__list.w-dyn-items
+  justify-content start
+  grid-row-gap unset
+  grid-column-gap unset
+
+.daas-header__slider
+  .splide__track
+    overflow visible !important
+
+html.lenis
+  height auto
+
+.lenis.lenis-smooth
+  scroll-behavior auto
+
+.lenis.lenis-smooth [data-lenis-prevent]
+  overscroll-behavior contain
+
+.lenis.lenis-stopped
+  overflow hidden
+
+.lenis.lenis-scrolling iframe
+  pointer-events none
