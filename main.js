@@ -32,7 +32,22 @@ location$a.forEach((location) => {
     location.style.left = ((position.x + markerRadius - mapPosition.x) / mapPosition.width) * 100 + '%'
   }
   location.style.top = position.y + markerRadius - mapPosition.y + 'px'
-  locationTl[state] = gsap.timeline({ ease: 'power4.inOut', paused: true }).to(location, { opacity: 1, duration: 0.3 })
+  const line$ = location.querySelector('.map__line path')
+
+  const lineLength = line$.getTotalLength()
+
+  console.log(line$)
+
+  locationTl[state] = gsap
+    .timeline({ defaults: { ease: 'power2.out', duration: 0.3 }, paused: true })
+    .to(location, { opacity: 1 }, 0)
+    .from(location.querySelector('.map__location__info'), { y: 20 }, 0)
+    .fromTo(
+      line$,
+      { strokeDashoffset: 0, strokeDasharray: 0 + ' ' + lineLength },
+      { strokeDashoffset: 0, strokeDasharray: lineLength + ' ' + lineLength, duration: 1 },
+      0
+    )
 
   fragment.appendChild(location)
 })
