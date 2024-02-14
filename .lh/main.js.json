@@ -3,11 +3,55 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 11,
             "patches": [
                 {
                     "date": 1707852601301,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1707920802889,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,2 +1,12 @@\n+import gsap from 'gsap'\r\n+import Lenis from '@studio-freight/lenis'\r\n+\r\n import './style.styl'\r\n console.log('ffff')\r\n+const lenis = new Lenis()\r\n+lenis.on('scroll', ScrollTrigger.update)\r\n+\r\n+gsap.ticker.add((time) => {\r\n+  lenis.raf(time * 1000)\r\n+})\r\n+gsap.ticker.lagSmoothing(0)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1707920811696,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n import gsap from 'gsap'\r\n import Lenis from '@studio-freight/lenis'\r\n \r\n import './style.styl'\r\n-console.log('ffff')\r\n+\r\n const lenis = new Lenis()\r\n lenis.on('scroll', ScrollTrigger.update)\r\n \r\n gsap.ticker.add((time) => {\r\n"
+                },
+                {
+                    "date": 1707920950512,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,11 @@\n import gsap from 'gsap'\r\n import Lenis from '@studio-freight/lenis'\r\n \r\n import './style.styl'\r\n-\r\n+import { ScrollTrigger } from 'gsap/ScrollTrigger'\r\n const lenis = new Lenis()\r\n lenis.on('scroll', ScrollTrigger.update)\r\n-\r\n gsap.ticker.add((time) => {\r\n   lenis.raf(time * 1000)\r\n })\r\n gsap.ticker.lagSmoothing(0)\r\n"
+                },
+                {
+                    "date": 1707920980196,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,10 @@\n import gsap from 'gsap'\r\n+import { ScrollTrigger } from 'gsap/ScrollTrigger'\r\n import Lenis from '@studio-freight/lenis'\r\n \r\n import './style.styl'\r\n-import { ScrollTrigger } from 'gsap/ScrollTrigger'\r\n+\r\n const lenis = new Lenis()\r\n lenis.on('scroll', ScrollTrigger.update)\r\n gsap.ticker.add((time) => {\r\n   lenis.raf(time * 1000)\r\n"
+                },
+                {
+                    "date": 1707922128298,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,11 +2,16 @@\n import { ScrollTrigger } from 'gsap/ScrollTrigger'\r\n import Lenis from '@studio-freight/lenis'\r\n \r\n import './style.styl'\r\n+import { selAll } from './utils'\r\n \r\n const lenis = new Lenis()\r\n lenis.on('scroll', ScrollTrigger.update)\r\n gsap.ticker.add((time) => {\r\n   lenis.raf(time * 1000)\r\n })\r\n gsap.ticker.lagSmoothing(0)\r\n+\r\n+const location$a = selAll('.map__location-list .map__location')\r\n+console.log(location$a)\r\n+\r\n"
+                },
+                {
+                    "date": 1707922239682,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,6 +11,6 @@\n   lenis.raf(time * 1000)\r\n })\r\n gsap.ticker.lagSmoothing(0)\r\n \r\n-const location$a = selAll('.map__location-list .map__location')\r\n+const location$a = selAll('.map__location-w .map__location')\r\n console.log(location$a)\r\n"
+                },
+                {
+                    "date": 1707922396722,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,5 +12,7 @@\n })\r\n gsap.ticker.lagSmoothing(0)\r\n \r\n const location$a = selAll('.map__location-w .map__location')\r\n-console.log(location$a)\r\n+console.log(typeof location$a)\r\n+\r\n+\r\n"
+                },
+                {
+                    "date": 1707922598241,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,6 +11,10 @@\n   lenis.raf(time * 1000)\r\n })\r\n gsap.ticker.lagSmoothing(0)\r\n \r\n-const location$a = selAll('.map__location-w .map__location')\r\n-console.log(typeof location$a)\r\n+const mapLocationW$ = sel('.map__location-w')\r\n+const location$a = mapLocationW$.querySelect('.map__location')\r\n+const fragment = document.createDocumentFragment()\r\n+location$a.forEach((location) => {\r\n+  fragment.appendChild(location)})\r\n+\r\n"
+                },
+                {
+                    "date": 1707922609919,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n import { ScrollTrigger } from 'gsap/ScrollTrigger'\r\n import Lenis from '@studio-freight/lenis'\r\n \r\n import './style.styl'\r\n-import { selAll } from './utils'\r\n+import { sel, selAll } from './utils'\r\n \r\n const lenis = new Lenis()\r\n lenis.on('scroll', ScrollTrigger.update)\r\n gsap.ticker.add((time) => {\r\n"
+                },
+                {
+                    "date": 1707922633550,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n })\r\n gsap.ticker.lagSmoothing(0)\r\n \r\n const mapLocationW$ = sel('.map__location-w')\r\n-const location$a = mapLocationW$.querySelect('.map__location')\r\n+const location$a = mapLocationW$.querySelect ('.map__location')\r\n const fragment = document.createDocumentFragment()\r\n location$a.forEach((location) => {\r\n   fragment.appendChild(location)\r\n })\r\n"
+                },
+                {
+                    "date": 1707922651627,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n })\r\n gsap.ticker.lagSmoothing(0)\r\n \r\n const mapLocationW$ = sel('.map__location-w')\r\n-const location$a = mapLocationW$.querySelect('.map__location')\r\n+const location$a = mapLocationW$.querySelector('.map__location')\r\n const fragment = document.createDocumentFragment()\r\n location$a.forEach((location) => {\r\n   fragment.appendChild(location)\r\n })\r\n"
                 }
             ],
             "date": 1707852601301,

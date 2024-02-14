@@ -12,6 +12,7 @@
     "vite": "^5.1.0"
   },
   "dependencies": {
+    "@studio-freight/lenis": "^1.0.35",
     "gsap": "^3.12.5",
     "stylus": "^0.62.0"
   }
