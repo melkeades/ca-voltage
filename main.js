@@ -51,6 +51,7 @@ location$a.forEach((location) => {
 
   fragment.appendChild(location)
 })
+
 mapLocationW$.replaceChildren(fragment)
 
 const mapStateW$ = selAll('.map__state-w')
