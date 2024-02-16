@@ -23,15 +23,14 @@ let locationTl = {}
 location$a.forEach((location) => {
   const state = location.dataset.map
   const mapMarker = sel('#' + state + ' .map__state__fill')
-  const position = mapMarker.getBoundingClientRect()
-  if (position.x > viewportWidth / 2) {
+  const markerPosition = mapMarker.getBoundingClientRect()
+  if (markerPosition.x > viewportWidth / 2) {
     location.classList.add('is--left')
-    const width = location.getBoundingClientRect().width
-    location.style.left = ((position.x + markerRadius - width - mapPosition.x) / mapPosition.width) * 100 + '%'
+    location.style.left = ((markerPosition.x + markerRadius - mapPosition.x) / mapPosition.width) * 100 + '%'
   } else {
-    location.style.left = ((position.x + markerRadius - mapPosition.x) / mapPosition.width) * 100 + '%'
+    location.style.left = ((markerPosition.x + markerRadius - mapPosition.x) / mapPosition.width) * 100 + '%'
   }
-  location.style.top = position.y + markerRadius - mapPosition.y + 'px'
+  location.style.top = markerPosition.y + markerRadius - mapPosition.y + 'px'
   const line$ = location.querySelector('.map__line path')
 
   const lineLength = line$.getTotalLength()

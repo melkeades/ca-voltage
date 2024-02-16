@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 14,
+            "activePatchIndex": 16,
             "patches": [
                 {
                     "date": 1707852757611,
@@ -64,6 +64,14 @@
                 {
                     "date": 1707930951359,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,33 @@\n+\r\n+[slider-cut] .w-dyn-item\r\n+  display flex !important\r\n+  //display block !important\r\n+\r\n+.splide__list.w-dyn-items\r\n+  justify-content start\r\n+  grid-row-gap unset\r\n+  grid-column-gap unset\r\n+\r\n+.daas-header__slider\r\n+  .splide__track\r\n+    overflow visible !important\r\n+\r\n+html.lenis\r\n+  height auto\r\n+\r\n+.lenis.lenis-smooth\r\n+  scroll-behavior auto\r\n+\r\n+.lenis.lenis-smooth [data-lenis-prevent]\r\n+  overscroll-behavior contain\r\n+\r\n+.lenis.lenis-stopped\r\n+  overflow hidden\r\n+\r\n+.lenis.lenis-scrolling iframe\r\n+  pointer-events none\r\n+\r\n+.map__location\r\n+  //translate 0 -100%\r\n+  opacity 0\r\n+  pointer-events none\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1707938344765,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,36 @@\n+\r\n+[slider-cut] .w-dyn-item\r\n+  display flex !important\r\n+  //display block !important\r\n+\r\n+.splide__list.w-dyn-items\r\n+  justify-content start\r\n+  grid-row-gap unset\r\n+  grid-column-gap unset\r\n+\r\n+.daas-header__slider\r\n+  .splide__track\r\n+    overflow visible !important\r\n+\r\n+html.lenis\r\n+  height auto\r\n+\r\n+.lenis.lenis-smooth\r\n+  scroll-behavior auto\r\n+\r\n+.lenis.lenis-smooth [data-lenis-prevent]\r\n+  overscroll-behavior contain\r\n+\r\n+.lenis.lenis-stopped\r\n+  overflow hidden\r\n+\r\n+.lenis.lenis-scrolling iframe\r\n+  pointer-events none\r\n+\r\n+.map__location\r\n+  //translate 0 -100%\r\n+  opacity 0\r\n+  pointer-events none\r\n+\r\n+.map__location.is--left\r\n+  translate 0 -100%\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1707938356049,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,36 @@\n+\r\n+[slider-cut] .w-dyn-item\r\n+  display flex !important\r\n+  //display block !important\r\n+\r\n+.splide__list.w-dyn-items\r\n+  justify-content start\r\n+  grid-row-gap unset\r\n+  grid-column-gap unset\r\n+\r\n+.daas-header__slider\r\n+  .splide__track\r\n+    overflow visible !important\r\n+\r\n+html.lenis\r\n+  height auto\r\n+\r\n+.lenis.lenis-smooth\r\n+  scroll-behavior auto\r\n+\r\n+.lenis.lenis-smooth [data-lenis-prevent]\r\n+  overscroll-behavior contain\r\n+\r\n+.lenis.lenis-stopped\r\n+  overflow hidden\r\n+\r\n+.lenis.lenis-scrolling iframe\r\n+  pointer-events none\r\n+\r\n+.map__location\r\n+  //translate 0 -100%\r\n+  opacity 0\r\n+  pointer-events none\r\n+\r\n+.map__location.is--left\r\n+  translate -100%\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1707852757611,
