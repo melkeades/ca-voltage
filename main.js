@@ -22,8 +22,9 @@ const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window
 let locationTl = {}
 location$a.forEach((location) => {
   const state = location.dataset.map
-  const mapMarker = sel('#' + state + ' .map__state__fill')
-  const markerPosition = mapMarker.getBoundingClientRect()
+  const mapStateW$ = sel('#' + state + ' .map__state')
+  const mapMarker$ = sel('#' + state + ' .map__state__fill')
+  const markerPosition = mapMarker$.getBoundingClientRect()
   if (markerPosition.x > viewportWidth / 2) {
     location.classList.add('is--left')
     location.style.left = ((markerPosition.x + markerRadius - mapPosition.x) / mapPosition.width) * 100 + '%'
@@ -40,10 +41,16 @@ location$a.forEach((location) => {
   locationTl[state] = gsap
     .timeline({ defaults: { ease: 'power2.out', duration: 0.3 }, paused: true })
     .to(location, { opacity: 1 }, 0)
+    .to(mapMarker$, { fill: 'white' }, 0)
+    .to(mapStateW$, { y: -10, scale: 1.025, fill: '#1999F7', filter: 'drop-shadow(0px 40px 20px rgba(46, 83, 127, 0.25))', transformOrigin: 'center' }, 0)
+    // .to(mapStateW$, { y: -10, fill: 'var(--base-color-brand--blue)' }, 0)
     .from(location.querySelector('.map__location__info'), { y: 20 }, 0)
     .fromTo(
       line$,
-      { strokeDashoffset: 0, strokeDasharray: 0 + ' ' + lineLength },
+      {
+        strokeDashoffset: 0, // where is starts
+        strokeDasharray: 0 + ' ' + lineLength, // dash length and gap length
+      },
       { strokeDashoffset: 0, strokeDasharray: lineLength + ' ' + lineLength, duration: 1 },
       0
     )
