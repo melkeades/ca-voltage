@@ -20,6 +20,7 @@ export default defineConfig({
   },
   build: {
     // sourcemap: 'inline',
+    sourcemap: true,
     minify: true,
     manifest: true,
     rollupOptions: {
