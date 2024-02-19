@@ -138,3 +138,29 @@ ScrollTrigger.create({
   snap: 1 / servicesItem$a.length,
   // markers: true,
 })
+
+// // Get all the tabs and tab panes
+// const tabs = document.querySelectorAll('.tab')
+// const tabPanes = document.querySelectorAll('.tab-pane')
+
+// // Add mouseover event listener to each tab
+// tabs.forEach((tab, index) => {
+//   tab.addEventListener('mouseover', () => {
+//     // Remove the 'active' class from all tabs and tab panes
+//     tabs.forEach((t) => t.classList.remove('active'))
+//     tabPanes.forEach((pane) => pane.classList.remove('active'))
+
+//     // Add the 'active' class to the hovered tab and corresponding tab pane
+//     tab.classList.add('active')
+//     tabPanes[index].classList.add('active')
+//   })
+// })
+//
+// sel('.navbar10_menu-dropdown').addEventListener('mouseover', function () {
+
+sel('.navbar10_menu-dropdown:nth-of-type(2)').addEventListener('mouseenter', function () {
+  // const g = sel('.navbar10_logo-link')
+  // console.log(g)
+  // g.dispatchEvent(new MouseEvent('click'))
+  // g.style.opacity = 0.5
+})
