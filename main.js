@@ -135,5 +135,6 @@ ScrollTrigger.create({
   end: 'bottom 50%',
   animation: servicesTlSt,
   scrub: true,
-  markers: true,
+  snap: 1 / servicesItem$a.length,
+  // markers: true,
 })
