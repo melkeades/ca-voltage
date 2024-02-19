@@ -2,12 +2,15 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from '@studio-freight/lenis'
 import Splide from '@splidejs/splide'
+import { AutoScroll } from '@splidejs/splide-extension-auto-scroll'
 import { Intersection } from '@splidejs/splide-extension-intersection'
 
 import '@splidejs/splide/css'
 
 import './style.styl'
 import { addSplideClasses, connectSplideArrows, connectSplideBullets, sel, selAll } from './utils'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const lenis = new Lenis()
 lenis.on('scroll', ScrollTrigger.update)
@@ -112,3 +115,25 @@ function testSliderInit() {
   connectSplideBullets(splide, name)
 }
 testSliderInit()
+
+const servicesList$ = sel('.services__list')
+const servicesItem$a = selAll('.services__item')
+const servicesTlSt = gsap.timeline({ defaults: { ease: 'none' } })
+
+servicesItem$a.forEach((item, index) => {
+  if (index === 0) return
+
+  servicesTlSt
+    .to(servicesItem$a[index - 1], { '--services-opacity': 0 }, index)
+    .to(item, { '--services-opacity': 1 }, index)
+    .to('.service__img-' + index, { opacity: 0 }, index)
+})
+
+ScrollTrigger.create({
+  trigger: servicesList$,
+  start: 'top 50%',
+  end: 'bottom 50%',
+  animation: servicesTlSt,
+  scrub: true,
+  markers: true,
+})
