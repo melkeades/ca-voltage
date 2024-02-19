@@ -33,3 +33,26 @@ html.lenis
 
 .map__location.is--left
   translate -100%
+
+.products__card-w
+  *
+    transition all 300ms
+
+  .products__h
+    text-decoration underline
+    text-underline-offset .25em
+    text-decoration-color transparent
+
+.products__card-w:hover
+  .products__card__bg
+    filter brightness(1.2)
+
+  .products__img-w
+    translate 0 -10px
+
+  .products__a-w
+    gap 1rem
+
+  .products__h
+    //text-decoration-color var(--base-color-brand--blue)
+    text-decoration-color white

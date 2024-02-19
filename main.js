@@ -1,9 +1,13 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from '@studio-freight/lenis'
+import Splide from '@splidejs/splide'
+import { Intersection } from '@splidejs/splide-extension-intersection'
+
+import '@splidejs/splide/css'
 
 import './style.styl'
-import { sel, selAll } from './utils'
+import { addSplideClasses, connectSplideArrows, connectSplideBullets, sel, selAll } from './utils'
 
 const lenis = new Lenis()
 lenis.on('scroll', ScrollTrigger.update)
@@ -40,23 +44,30 @@ location$a.forEach((location) => {
   const lineLength = line$.getTotalLength()
 
   locationTl[state] = gsap
-    .timeline({ defaults: { ease: 'power4.inOut', duration: 0.5 }, paused: true })
-    .to(location, { opacity: 1 }, 0)
+    .timeline({ defaults: { ease: 'power4.inOut', duration: 0.6 }, paused: true })
+    .to(location, { opacity: 1, duration: 0.3 }, 0)
     .to(mapMarker$, { fill: 'white' }, 0)
     .to(
       mapStateW$,
-      { x: xShift, y: -10, scale: 1.1, fill: '#1999F7', filter: 'drop-shadow(0px 40px 20px rgba(46, 83, 127, 0.25))', transformOrigin: 'center' },
+      {
+        x: xShift,
+        y: -10,
+        scale: 1.1,
+        fill: '#1999F7',
+        filter: 'drop-shadow(0px 40px 20px rgba(46, 83, 127, 0.25))',
+        transformOrigin: 'center',
+      },
       0
     )
     // .to(mapStateW$, { y: -10, fill: 'var(--base-color-brand--blue)' }, 0)
-    .from(location.querySelector('.map__location__info'), { y: 20 }, 0)
+    .from(location.querySelector('.map__location__info'), { y: 30, ease: 'power2.out' }, 0)
     .fromTo(
       line$,
       {
         strokeDashoffset: 0, // where is starts
         strokeDasharray: 0 + ' ' + lineLength, // dash length and gap length
       },
-      { strokeDashoffset: 0, strokeDasharray: lineLength + ' ' + lineLength, duration: 0.5 },
+      { strokeDashoffset: 0, strokeDasharray: lineLength + ' ' + lineLength },
       0
     )
 
@@ -74,3 +85,30 @@ mapStateW$.forEach((mapState) => {
     locationTl[this.id].reverse()
   })
 })
+
+function testSliderInit() {
+  const name = 'tests'
+  addSplideClasses(name + '__slider')
+  const splide = new Splide('.' + name + '__slider', {
+    arrows: false,
+    pagination: false,
+    gap: '2rem',
+    type: 'loop',
+    perPage: 1,
+    speed: 1500,
+    interval: 5000,
+    easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+    autoplay: 'pause',
+    intersection: {
+      inView: {
+        autoplay: true,
+      },
+      outView: {
+        autoplay: false,
+      },
+    },
+  }).mount({ Intersection })
+  connectSplideArrows(splide, name)
+  connectSplideBullets(splide, name)
+}
+testSliderInit()
