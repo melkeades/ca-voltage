@@ -133,6 +133,7 @@ ScrollTrigger.create({
   trigger: servicesList$,
   start: 'top 50%',
   end: 'bottom 50%',
+  // pin: '.services__img-col',
   animation: servicesTlSt,
   scrub: true,
   snap: 1 / servicesItem$a.length,
