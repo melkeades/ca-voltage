@@ -3,11 +3,19 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 2,
             "patches": [
                 {
                     "date": 1708124148974,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1708439808846,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -226,4 +226,23 @@\n   swiper.classList.add('swiper')\r\n   list.classList.add('swiper-wrapper')\r\n   slide.forEach((slide) => slide.classList.add('swiper-slide'))\r\n }\r\n+\r\n+export function          getSiblings  (e) {\r\n+            // for collecting siblings\r\n+            let siblings = []; \r\n+            // if no parent, return no sibling\r\n+            if(!e.parentNode) {\r\n+                return siblings;\r\n+            }\r\n+            // first child of the parent node\r\n+            let sibling  = e.parentNode.firstChild;\r\n+            // collecting siblings\r\n+            while (sibling) {\r\n+                if (sibling.nodeType === 1 && sibling !== e) {\r\n+                    siblings.push(sibling);\r\n+                }\r\n+                sibling = sibling.nextSibling;\r\n+            }\r\n+            return siblings;\r\n+        };\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1708439830207,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -228,9 +228,8 @@\n   slide.forEach((slide) => slide.classList.add('swiper-slide'))\r\n }\r\n \r\n export function getSiblings(e) {\r\n-  // for collecting siblings\r\n   let siblings = []\r\n   // if no parent, return no sibling\r\n   if (!e.parentNode) {\r\n     return siblings\r\n"
                 }
             ],
             "date": 1708124148974,

@@ -227,3 +227,21 @@ export function addSwiperClasses(slider) {
   list.classList.add('swiper-wrapper')
   slide.forEach((slide) => slide.classList.add('swiper-slide'))
 }
+
+export function getSiblings(e) {
+  let siblings = []
+  // if no parent, return no sibling
+  if (!e.parentNode) {
+    return siblings
+  }
+  // first child of the parent node
+  let sibling = e.parentNode.firstChild
+  // collecting siblings
+  while (sibling) {
+    if (sibling.nodeType === 1 && sibling !== e) {
+      siblings.push(sibling)
+    }
+    sibling = sibling.nextSibling
+  }
+  return siblings
+}
