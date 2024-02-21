@@ -1,6 +1,6 @@
 // div:has(~ .products-sec) { display: none; }
 
-[data-video-urls] video { display: none; }
+// [data-video-urls] video { display: none; }
 
 .navbar__dd__list
   // transition all 300ms !important
@@ -40,3 +40,45 @@ html.lenis
   display inline-flex
   width .625em 
   height 1.2em
+
+.map__location
+  @media screen and (max-width: 991px)
+    left auto
+    top auto !important
+    .map__location__info
+      transform translateY(0) !important
+.location__slider .is-active .location__item__cont
+  background var(--base-color-brand--blue)
+  color white
+  // opacity .1
+.splide__track--nav .is-active
+  border none !important
+@media screen and (max-width: 991px)
+  .map__state, .map__state__fill
+    transition: all 300ms
+
+  .map__state-w.is--active
+    .map__state
+      fill var(--base-color-brand--blue)
+    .map__state__fill
+      fill white
+      
+// .navbar.is--sticky
+//   position fixed
+//   top 0
+//   left 0
+//   right 0
+//   z-index 500 !important
+//   background: var(--base-color-brand--dark-blue)
+//   translate 0 -100% !important
+.navbar-sticky
+    .navbar
+      background: var(--base-color-brand--dark-blue)
+      .menu-icon>*
+        background: white
+    // .w-dropdown-toggle, .w-nav-link, .w-inline-block
+    @media(min-width 991px)
+      .navbar__dd, .navbar__link, .navbar__search-ico
+        &:hover
+          color var(--base-color-brand--blue)
+        color white

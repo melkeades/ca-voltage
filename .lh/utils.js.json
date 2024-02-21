@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 3,
             "patches": [
                 {
                     "date": 1708124148974,
@@ -16,6 +16,10 @@
                 {
                     "date": 1708439830207,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -228,9 +228,8 @@\n   slide.forEach((slide) => slide.classList.add('swiper-slide'))\r\n }\r\n \r\n export function getSiblings(e) {\r\n-  // for collecting siblings\r\n   let siblings = []\r\n   // if no parent, return no sibling\r\n   if (!e.parentNode) {\r\n     return siblings\r\n"
+                },
+                {
+                    "date": 1708533735834,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,9 @@\n export const sel = (e) => document.querySelector(e)\r\n export const selAll = (e) => document.querySelectorAll(e)\r\n export const vh = (percent) => window.innerHeight * (percent / 100)\r\n export const vw = (percent) => window.innerWidth * (percent / 100)\r\n+const isDomEl = (el) => el instanceof Document || el instanceof Element\r\n \r\n // export function debounce(func, time = 100) {\r\n //   let timer = 0\r\n //   return function (event) {\r\n"
                 }
             ],
             "date": 1708124148974,

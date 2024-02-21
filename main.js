@@ -8,7 +8,7 @@ import { Intersection } from '@splidejs/splide-extension-intersection'
 import '@splidejs/splide/css'
 
 import './style.styl'
-import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, getSiblings, sel, selAll, vw } from './utils'
+import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, getSiblings, sel, selAll, vh, vw } from './utils'
 import ScrollToPlugin from 'gsap/ScrollToPlugin'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
@@ -19,10 +19,56 @@ gsap.ticker.add((time) => {
   lenis.raf(time * 1000)
 })
 gsap.ticker.lagSmoothing(0)
+// function navbarInit() {
+//   const navbar = document.getElementsByClassName('navbar')[0]
+//   // get element by class
+
+//   console.log(navbar)
+
+//   const navbarSticky$ = navbar.cloneNode(true)
+//   navbarSticky$.classList.add('is--sticky')
+//   navbar.parentNode.appendChild(navbarSticky$)
+//   // const navbarSticky$ = sel('.navbar-sticky .navbar')
+//   if (navbarSticky$) {
+//     const navbarTl = gsap.to(navbarSticky$, {
+//       keyframes: { '0%': { opacity: 0 }, '30%': { opacity: 1 }, '100%': { opacity: 1 } },
+//       yPercent: 100,
+//       ease: 'linear',
+//       paused: true,
+//     })
+//     ScrollTrigger.create({
+//       trigger: 'body',
+//       start: vh(160) + ' top',
+//       onToggle({ direction, getVelocity }) {
+//         // to reverse the easing
+//         gsap.to(navbarTl, { duration: 1.5, progress: direction === 1 ? 1 : 0, ease: 'expo.out' })
+//       },
+//     })
+//   }
+// }
+// navbarInit()
+
+const navbarSticky$ = sel('.navbar-sticky .navbar')
+if (navbarSticky$) {
+  const navbarTl = gsap.to(navbarSticky$, {
+    keyframes: { '0%': { opacity: 0 }, '30%': { opacity: 1 }, '100%': { opacity: 1 } },
+    yPercent: 100,
+    ease: 'linear',
+    paused: true,
+  })
+  ScrollTrigger.create({
+    trigger: 'body',
+    start: vh(160) + ' top',
+    onToggle({ direction, getVelocity }) {
+      // to reverse the easing
+      gsap.to(navbarTl, { duration: 1.5, progress: direction === 1 ? 1 : 0, ease: 'expo.out' })
+    },
+  })
+}
 
 const mapLocationW$ = sel('.map__location-w')
 const location$a = mapLocationW$.querySelectorAll('.w-dyn-list .map__location')
-const fragment = document.createDocumentFragment()
+// const fragment = document.createDocumentFragment()
 const mapPosition = sel('.map__map').getBoundingClientRect()
 const markerRadius = sel('.map__state__fill').getBoundingClientRect().width / 2
 
@@ -77,10 +123,10 @@ location$a.forEach((location) => {
       0.3
     )
 
-  fragment.appendChild(location)
+  // fragment.appendChild(location)
 })
 
-mapLocationW$.replaceChildren(fragment)
+// mapLocationW$.querySelector('.location__info-slider').replaceChildren(fragment)
 
 const mapStateW$ = selAll('.map__state-w')
 mapStateW$.forEach((mapState) => {
@@ -94,7 +140,6 @@ mapStateW$.forEach((mapState) => {
 function testSliderInit() {
   const cont = sel('.tests__cont')
   const cont1 = sel('.tests__cont-1')
-  // let gap = a.getBoundingClientRect().x - b.getBoundingClientRect().x
 
   const name = 'tests'
   addSplideClasses(name + '__slider')
@@ -122,7 +167,6 @@ function testSliderInit() {
     const gap = cont1.getBoundingClientRect().x - cont.getBoundingClientRect().x
     const vw5 = vw(5)
     splide.options.gap = gap < vw5 ? gap + vw5 : gap
-    // console.log('gap: ', gap, vw5)
     splide.refresh()
   }
   const refresh = debounce(updateGap, 100)
@@ -155,37 +199,10 @@ ScrollTrigger.create({
   trigger: servicesList$,
   start: 'top 50%',
   end: 'bottom 75%',
-  // pin: '.services__img-col',
   animation: servicesTlSt,
   scrub: true,
   snap: 1 / servicesItem$a.length,
   // markers: true,
-})
-
-// // Get all the tabs and tab panes
-// const tabs = document.querySelectorAll('.tab')
-// const tabPanes = document.querySelectorAll('.tab-pane')
-
-// // Add mouseover event listener to each tab
-// tabs.forEach((tab, index) => {
-//   tab.addEventListener('mouseover', () => {
-//     // Remove the 'active' class from all tabs and tab panes
-//     tabs.forEach((t) => t.classList.remove('active'))
-//     tabPanes.forEach((pane) => pane.classList.remove('active'))
-
-//     // Add the 'active' class to the hovered tab and corresponding tab pane
-//     tab.classList.add('active')
-//     tabPanes[index].classList.add('active')
-//   })
-// })
-//
-// sel('.navbar10_menu-dropdown').addEventListener('mouseover', function () {
-
-sel('.navbar10_menu-dropdown:nth-of-type(2)').addEventListener('mouseenter', function () {
-  // const g = sel('.navbar10_logo-link')
-  // console.log(g)
-  // g.dispatchEvent(new MouseEvent('click'))
-  // g.style.opacity = 0.5
 })
 
 const navbarTabs$a = selAll('.navbar__dd__tab')
@@ -217,6 +234,7 @@ navbarTabs$a.forEach((tab) => {
     changeTabHandle(this)
   })
 })
+
 const navbarDd$a = selAll('.navbar__dd')
 let mm = gsap.matchMedia()
 mm.add('(min-width: 991px)', (context) => {
@@ -226,7 +244,7 @@ mm.add('(min-width: 991px)', (context) => {
   })
   context.add('mouseleave', (e) => {
     const to = e.toElement || e.relatedTarget
-    console.log(e, to, to.classList.contains('navbar__cont'))
+    // console.log(e, to, to.classList.contains('navbar__cont'))
     if (to.classList.contains('w-dropdown-list') || to.classList.contains('navbar__cont')) return
 
     const el = e.target.parentNode.querySelector('.navbar__dd__list')
@@ -245,13 +263,11 @@ mm.add('(min-width: 991px)', (context) => {
     })
   }
 })
-mm.add('(max-width: 990px)', () => {})
 
 function mapCounterInit() {
   const mapNum$ = sel('.map__h__num')
   // get the line height of the element in em
   const lineHeight = parseFloat(getComputedStyle(mapNum$).lineHeight) / parseFloat(getComputedStyle(mapNum$).fontSize)
-  console.log(lineHeight)
 
   const num = mapNum$.textContent
   let numbers = num.split('').map(Number)
@@ -290,3 +306,45 @@ function mapCounterInit() {
   })
 }
 mapCounterInit()
+
+mm.add('(max-width: 990px)', () => {
+  const name = 'location'
+  const locationSlider$ = sel('.' + name + '__slider')
+  const locationInfoSlider$ = sel('.' + name + '__info-slider')
+  addSplideClasses(locationSlider$)
+  addSplideClasses(locationInfoSlider$)
+
+  const locationInfoSlider = new Splide(locationInfoSlider$, {
+    type: 'fade',
+    rewind: true, // to make it "loop" with the type fade
+    arrows: false,
+    pagination: false,
+    width: 300,
+    gap: 0,
+  })
+  const locationSlider = new Splide(locationSlider$, {
+    arrows: false,
+    pagination: false,
+    gap: '1rem',
+    type: 'loop',
+    autoWidth: true,
+    drag: 'free',
+    focus: 'center',
+    isNavigation: true,
+    autoScroll: { speed: 0.6, autoStart: true },
+  })
+  let currentState = ''
+  const updateMapState = debounce(() => {
+    const newSate = sel('.location__slider').querySelector('.is-active').dataset.map
+    if (currentState === newSate) return
+    if (currentState) sel('#' + currentState).classList.remove('is--active')
+    sel('#' + newSate).classList.add('is--active')
+    currentState = newSate
+  })
+  locationSlider.mount({ AutoScroll })
+  locationInfoSlider.mount()
+  locationSlider.on('active', (slide) => {
+    locationInfoSlider.go(slide.slideIndex)
+    updateMapState()
+  })
+})
