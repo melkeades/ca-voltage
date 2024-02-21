@@ -246,3 +246,47 @@ mm.add('(min-width: 991px)', (context) => {
   }
 })
 mm.add('(max-width: 990px)', () => {})
+
+function mapCounterInit() {
+  const mapNum$ = sel('.map__h__num')
+  // get the line height of the element in em
+  const lineHeight = parseFloat(getComputedStyle(mapNum$).lineHeight) / parseFloat(getComputedStyle(mapNum$).fontSize)
+  console.log(lineHeight)
+
+  const num = mapNum$.textContent
+  let numbers = num.split('').map(Number)
+
+  let fragment = document.createDocumentFragment()
+  const time = 3
+
+  numbers.forEach((n, i) => {
+    const span = document.createElement('span')
+    span.textContent = '0 1 2 3 4 5 6 7 8 9 0'
+    span.classList.add('map__num', 'map__num-' + (i + 1))
+    fragment.appendChild(span)
+  })
+  mapNum$.replaceChildren(fragment)
+
+  const mapNumbersTl = gsap.timeline({ paused: true, defaults: { ease: 'none' } })
+
+  numbers.forEach((number, i) => {
+    const index = i + 1
+    let params = {}
+    switch (index) {
+      case 1:
+        params = { y: -number * lineHeight + 'em', duration: time }
+        break
+      case 2:
+        params = { y: -(number + 10) * lineHeight + 'em', repeat: 1, duration: time / index }
+        break
+    }
+    mapNumbersTl.to('.map__num-' + index, params, 0)
+  })
+
+  ScrollTrigger.create({
+    trigger: mapNum$,
+    start: 'top 75%',
+    animation: gsap.to(mapNumbersTl, { progress: 1, duration: 3, ease: 'power4.out' }),
+  })
+}
+mapCounterInit()
