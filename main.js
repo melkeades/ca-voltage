@@ -78,6 +78,7 @@ let locationTl = {}
 location$a.forEach((location) => {
   const state = location.dataset.map
   const mapState$ = sel('#' + state)
+  const mapStateWrap$ = mapState$.querySelector('.map__state-in')
   const mapStateW$ = mapState$.querySelector('.map__state')
   const mapMarker$ = mapState$.querySelector('.map__state__fill')
   const markerPosition = mapMarker$.getBoundingClientRect().x - mapPosition.x
@@ -100,7 +101,7 @@ location$a.forEach((location) => {
     .to(location, { opacity: 1, duration: 0.3 }, 0)
     .to(mapMarker$, { fill: 'white', duration: 0.3 }, 0)
     .to(
-      mapState$,
+      mapStateWrap$,
       {
         x: xShift,
         y: yShift,
