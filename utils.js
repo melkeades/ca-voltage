@@ -54,7 +54,8 @@ export function removeSplideClasses(slider) {
 export function addSplideClasses(slider, trackClass = '') {
   let splide
   if (typeof slider === 'string') {
-    splide = document.querySelector('.' + slider)
+    const fullClassName = slider.charAt(0) === '.' ? slider : '.' + slider
+    splide = document.querySelector(fullClassName)
   } else if (isDomEl(slider)) {
     splide = slider
   }
@@ -102,6 +103,49 @@ export function connectSplideBullets(splide, classPrefix) {
   splide.on('move', function (newIndex, oldIndex) {
     sel(`.${classPrefix}__pagination .bullet--active`).classList.remove('bullet--active')
     sel(`.${classPrefix}__pagination .bullet:nth-of-type(${splide.index + 1})`).classList.add('bullet--active')
+  })
+}
+export function connectSplideCarouselBullets(splide, classPrefix) {
+  const slider$ = splide.root
+  let pages = 1
+  // parse bullets inside the container and repopulate
+  const pagination$ = slider$.querySelector(`.${classPrefix}__pagination`)
+  function initSate() {
+    pages = Math.ceil(splide.length / splide.options.perPage)
+    if (pages > 1) {
+      pagination$.parentElement.style.maxHeight = 'revert-layer' // to get the initial css value
+
+      const bullet$ = slider$.querySelector(`.${classPrefix}__pagination .bullet:not(.bullet--active)`)
+      let fragment = document.createDocumentFragment()
+      for (let i = 0; i < pages; i++) {
+        let clone$ = bullet$.cloneNode(true)
+        clone$.addEventListener('click', (e) => {
+          splide.go('>' + i)
+        })
+        fragment.appendChild(clone$)
+      }
+      fragment.firstChild.classList.add('bullet--active')
+      pagination$.replaceChildren(fragment)
+    } else {
+      // keep the dom elements to repopulate in the future
+      pagination$.parentElement.style.maxHeight = '0px'
+    }
+  }
+  function initBullets(newIndex = splide.index) {
+    const index = Math.ceil(newIndex / splide.options.perPage)
+
+    slider$.querySelector(`.${classPrefix}__pagination .bullet--active`)?.classList.remove('bullet--active')
+    slider$.querySelector(`.${classPrefix}__pagination .bullet:nth-of-type(${index + 1})`)?.classList.add('bullet--active')
+  }
+  splide.on('mounted resized ', function () {
+    initSate()
+    splide.go(0)
+    // updateBullets()
+  })
+  splide.on('move ', function (newIndex, oldIndex) {
+    if (pages < 2) return
+    // const index = splide.Components.Controller.toPage(splide.index) // works but the calculation can be wrong as the bullets are manually added
+    initBullets(newIndex)
   })
 }
 
