@@ -63,8 +63,9 @@ export function addSplideClasses(slider, trackClass = '') {
   // const track = splide.querySelector('.w-dyn-list')
   const track = trackClass === '' ? splide.querySelector('.w-dyn-list') : splide.querySelector(trackClass)
 
-  const list = track.children[0]
+  const list = track.querySelector('.w-dyn-items')
   const slide = list.childNodes
+
   splide.classList.add('splide')
   track.classList.add('splide__track')
   list.classList.add('splide__list')

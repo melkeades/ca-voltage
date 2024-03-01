@@ -11,6 +11,7 @@ import ScrollToPlugin from 'gsap/ScrollToPlugin'
 import Home from './home'
 import About from './about'
 import Services from './services'
+import Product from './product'
 
 import './style.styl'
 
@@ -75,6 +76,9 @@ switch (dataPage) {
     break
   case 'about':
     About()
+    break
+  case 'product':
+    Product()
     break
   case 'services':
     Services()
