@@ -83,6 +83,10 @@ switch (dataPage) {
   case 'services':
     Services()
     break
+  case 'service':
+    Services()
+    break
+
   case 'error':
     error()
     break
