@@ -72,6 +72,24 @@ export function addSplideClasses(slider, trackClass = '') {
   slide.forEach((slide) => slide.classList.add('splide__slide'))
 }
 
+export function addStaticSplideClasses(slider) {
+  let splide
+  if (typeof slider === 'string') {
+    const fullClassName = slider.charAt(0) === '.' ? slider : '.' + slider
+    splide = document.querySelector(fullClassName)
+  } else if (isDomEl(slider)) {
+    splide = slider
+  }
+  const track = splide.firstChild
+  const list = track.firstChild
+  const slide = list.childNodes
+
+  splide.classList.add('splide')
+  track.classList.add('splide__track')
+  list.classList.add('splide__list')
+  slide.forEach((slide) => slide.classList.add('splide__slide'))
+}
+
 export function connectSplideArrows(splide, classPrefix) {
   sel(`.${classPrefix}__arrows .arrow--left`).addEventListener('pointerdown', function () {
     splide.go('<')

@@ -1,0 +1,42 @@
+{
+    "sourceFile": "error.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 6,
+            "patches": [
+                {
+                    "date": 1709522809011,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1709523287617,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,13 +3,13 @@\n import { Intersection } from '@splidejs/splide-extension-intersection'\r\n \r\n import '@splidejs/splide/css'\r\n \r\n-import { addSplideClasses, sel, debounce, vw, connectSplideArrows, connectSplideBullets } from './utils'\r\n+import { addStaticSplideClasses, sel, debounce, vw, connectSplideArrows, connectSplideBullets } from './utils'\r\n export default function error() {\r\n   ;(() => {\r\n     const name = 'product-details'\r\n-    addSplideClasses(name + '__slider')\r\n+    addStaticSplideClasses(name + '__slider')\r\n     const splide = new Splide('.' + name + '__slider', {\r\n       autoplay: false,\r\n       autoHeight: true,\r\n       type: 'fade',\r\n@@ -17,9 +17,9 @@\n       pagination: false,\r\n       arrows: false,\r\n     })\r\n \r\n-    addSplideClasses(name + '__thumb-slider')\r\n+    addStaticSplideClasses(name + '__thumb-slider')\r\n     const thumbnails = new Splide('.' + name + '__thumb-slider', {\r\n       gap: '1rem',\r\n       perPage: 4,\r\n       rewind: true,\r\n"
+                },
+                {
+                    "date": 1709534613837,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,35 +6,30 @@\n \r\n import { addStaticSplideClasses, sel, debounce, vw, connectSplideArrows, connectSplideBullets } from './utils'\r\n export default function error() {\r\n   ;(() => {\r\n-    const name = 'product-details'\r\n-    addStaticSplideClasses(name + '__slider')\r\n-    const splide = new Splide('.' + name + '__slider', {\r\n+    const name = 'error-card'\r\n+    addStaticSplideClasses(name + '__img__slider')\r\n+    const img = new Splide('.' + name + '__img__slider', {\r\n       autoplay: false,\r\n       autoHeight: true,\r\n       type: 'fade',\r\n       rewind: true,\r\n       pagination: false,\r\n       arrows: false,\r\n     })\r\n \r\n-    addStaticSplideClasses(name + '__thumb-slider')\r\n-    const thumbnails = new Splide('.' + name + '__thumb-slider', {\r\n+    addStaticSplideClasses(name + '__slider')\r\n+    const info = new Splide('.' + name + '__slider', {\r\n       gap: '1rem',\r\n-      perPage: 4,\r\n+      perPage: 1,\r\n       rewind: true,\r\n       pagination: false,\r\n       arrows: false,\r\n       isNavigation: true,\r\n-      breakpoints: {\r\n-        767: {\r\n-          perPage: 2,\r\n-        },\r\n-      },\r\n     })\r\n \r\n-    splide.sync(thumbnails)\r\n-    splide.mount()\r\n-    thumbnails.mount()\r\n+    img.sync(info)\r\n+    img.mount()\r\n+    info.mount()\r\n   })()\r\n }\r\n"
+                },
+                {
+                    "date": 1709534855618,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n     })\r\n \r\n     addStaticSplideClasses(name + '__slider')\r\n     const info = new Splide('.' + name + '__slider', {\r\n-      gap: '1rem',\r\n+    //   gap: '1rem',\r\n       perPage: 1,\r\n       rewind: true,\r\n       pagination: false,\r\n       arrows: false,\r\n"
+                },
+                {
+                    "date": 1709534981451,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,8 +26,10 @@\n       pagination: false,\r\n       arrows: false,\r\n       isNavigation: true,\r\n     })\r\n+    connectSplideArrows(info, )\r\n+        connectSplideBullets(info, )\r\n \r\n     img.sync(info)\r\n     img.mount()\r\n     info.mount()\r\n"
+                },
+                {
+                    "date": 1709535080481,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,30 +6,29 @@\n \r\n import { addStaticSplideClasses, sel, debounce, vw, connectSplideArrows, connectSplideBullets } from './utils'\r\n export default function error() {\r\n   ;(() => {\r\n-    const name = 'error-card'\r\n-    addStaticSplideClasses(name + '__img__slider')\r\n-    const img = new Splide('.' + name + '__img__slider', {\r\n+    const prefix = 'error-card'\r\n+    addStaticSplideClasses(prefix + '__img__slider')\r\n+    const img = new Splide('.' + prefix + '__img__slider', {\r\n       autoplay: false,\r\n       autoHeight: true,\r\n       type: 'fade',\r\n       rewind: true,\r\n       pagination: false,\r\n       arrows: false,\r\n     })\r\n \r\n-    addStaticSplideClasses(name + '__slider')\r\n-    const info = new Splide('.' + name + '__slider', {\r\n+    addStaticSplideClasses(prefix + '__slider')\r\n+    const info = new Splide('.' + prefix + '__slider', {\r\n       //   gap: '1rem',\r\n       perPage: 1,\r\n       rewind: true,\r\n       pagination: false,\r\n       arrows: false,\r\n       isNavigation: true,\r\n     })\r\n-    connectSplideArrows(info)\r\n-    connectSplideBullets(info)\r\n+    connectSplideArrows( info, prefix)\r\n \r\n     img.sync(info)\r\n     img.mount()\r\n     info.mount()\r\n"
+                },
+                {
+                    "date": 1709536873218,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n     addStaticSplideClasses(prefix + '__slider')\r\n     const info = new Splide('.' + prefix + '__slider', {\r\n       //   gap: '1rem',\r\n       perPage: 1,\r\n-      rewind: true,\r\n+            loop: true,\r\n       pagination: false,\r\n       arrows: false,\r\n       isNavigation: true,\r\n     })\r\n"
+                }
+            ],
+            "date": 1709522809011,
+            "name": "Commit-0",
+            "content": "\r\nimport Splide from '@splidejs/splide'\r\nimport { AutoScroll } from '@splidejs/splide-extension-auto-scroll'\r\nimport { Intersection } from '@splidejs/splide-extension-intersection'\r\n\r\nimport '@splidejs/splide/css'\r\n\r\nimport { addSplideClasses, sel, debounce, vw, connectSplideArrows, connectSplideBullets } from './utils'\r\nexport default function error() {\r\n  ;(() => {\r\n    const name = 'product-details'\r\n    addSplideClasses(name + '__slider')\r\n    const splide = new Splide('.' + name + '__slider', {\r\n      autoplay: false,\r\n      autoHeight: true,\r\n      type: 'fade',\r\n      rewind: true,\r\n      pagination: false,\r\n      arrows: false,\r\n    })\r\n\r\n    addSplideClasses(name + '__thumb-slider')\r\n    const thumbnails = new Splide('.' + name + '__thumb-slider', {\r\n      gap: '1rem',\r\n      perPage: 4,\r\n      rewind: true,\r\n      pagination: false,\r\n      arrows: false,\r\n      isNavigation: true,\r\n      breakpoints: {\r\n        767: {\r\n          perPage: 2,\r\n        },\r\n      },\r\n    })\r\n\r\n    splide.sync(thumbnails)\r\n    splide.mount()\r\n    thumbnails.mount()\r\n  })()\r\n}\r\n"
+        }
+    ]
+}

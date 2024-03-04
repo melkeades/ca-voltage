@@ -12,6 +12,7 @@ import Home from './home'
 import About from './about'
 import Services from './services'
 import Product from './product'
+import Error from './error'
 
 import './style.styl'
 
@@ -88,7 +89,7 @@ switch (dataPage) {
     break
 
   case 'error':
-    error()
+    Error()
     break
   default:
     console.log('unknown data-page:', dataPage)
