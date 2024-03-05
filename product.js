@@ -26,11 +26,11 @@ export default function product() {
       pagination: false,
       arrows: false,
       isNavigation: true,
-      breakpoints: {
-        767: {
-          perPage: 2,
-        },
-      },
+      // breakpoints: {
+      //   767: {
+      //     perPage: 2,
+      //   },
+      // },
     })
 
     splide.sync(thumbnails)

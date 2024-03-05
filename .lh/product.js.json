@@ -1,0 +1,18 @@
+{
+    "sourceFile": "product.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1709680632433,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1709680632433,
+            "name": "Commit-0",
+            "content": "import Splide from '@splidejs/splide'\r\nimport { AutoScroll } from '@splidejs/splide-extension-auto-scroll'\r\nimport { Intersection } from '@splidejs/splide-extension-intersection'\r\n\r\nimport '@splidejs/splide/css'\r\n\r\nimport { addSplideClasses, sel, debounce, vw, connectSplideArrows, connectSplideBullets } from './utils'\r\nexport default function product() {\r\n  ;(() => {\r\n    const name = 'product-details'\r\n    addSplideClasses(name + '__slider')\r\n    const splide = new Splide('.' + name + '__slider', {\r\n      autoplay: false,\r\n      autoHeight: true,\r\n      type: 'fade',\r\n      rewind: true,\r\n      pagination: false,\r\n      arrows: false,\r\n    })\r\n\r\n    addSplideClasses(name + '__thumb-slider')\r\n    const thumbnails = new Splide('.' + name + '__thumb-slider', {\r\n      gap: '1rem',\r\n      perPage: 4,\r\n      rewind: true,\r\n      pagination: false,\r\n      arrows: false,\r\n      isNavigation: true,\r\n      // breakpoints: {\r\n      //   767: {\r\n      //     perPage: 2,\r\n      //   },\r\n      // },\r\n    })\r\n\r\n    splide.sync(thumbnails)\r\n    splide.mount()\r\n    thumbnails.mount()\r\n  })()\r\n}\r\n"
+        }
+    ]
+}
