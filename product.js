@@ -11,6 +11,7 @@ export default function product() {
     addSplideClasses(name + '__slider')
     const splide = new Splide('.' + name + '__slider', {
       perPage: 1,
+      width: '100%',
       autoplay: false,
       autoHeight: true,
       type: 'fade',
@@ -27,11 +28,12 @@ export default function product() {
       pagination: false,
       arrows: false,
       isNavigation: true,
-      // breakpoints: {
-      //   767: {
-      //     perPage: 2,
-      //   },
-      // },
+      breakpoints: {
+        767: {
+          perPage: 4.5,
+          gap: '0.25rem',
+        },
+      },
     })
 
     splide.sync(thumbnails)

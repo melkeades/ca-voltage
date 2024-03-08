@@ -3,11 +3,23 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 3,
             "patches": [
                 {
                     "date": 1709680632433,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1709907670165,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,13 +27,13 @@\n       rewind: true,\r\n       pagination: false,\r\n       arrows: false,\r\n       isNavigation: true,\r\n-      // breakpoints: {\r\n-      //   767: {\r\n-      //     perPage: 2,\r\n-      //   },\r\n-      // },\r\n+      breakpoints: {\r\n+        767: {\r\n+          perPage: 4.5,\r\n+        },\r\n+      },\r\n     })\r\n \r\n     splide.sync(thumbnails)\r\n     splide.mount()\r\n"
+                },
+                {
+                    "date": 1709907685653,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -30,8 +30,9 @@\n       isNavigation: true,\r\n       breakpoints: {\r\n         767: {\r\n           perPage: 4.5,\r\n+          gap: '0.5rem',\r\n         },\r\n       },\r\n     })\r\n \r\n"
+                },
+                {
+                    "date": 1709907696085,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -30,9 +30,9 @@\n       isNavigation: true,\r\n       breakpoints: {\r\n         767: {\r\n           perPage: 4.5,\r\n-          gap: '0.5rem',\r\n+          gap: '0.25rem',\r\n         },\r\n       },\r\n     })\r\n \r\n"
                 }
             ],
             "date": 1709680632433,
