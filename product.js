@@ -10,10 +10,10 @@ export default function product() {
     const name = 'product-details'
     addSplideClasses(name + '__slider')
     const splide = new Splide('.' + name + '__slider', {
-      perPage: 1,
-      width: '100%',
+      // perPage: 1,
+      // width: '100%',
       autoplay: false,
-      autoHeight: true,
+      // autoHeight: true,
       type: 'fade',
       rewind: true,
       pagination: false,
