@@ -70,6 +70,14 @@ navbarTabs$a.forEach((tab) => {
   })
 })
 
+const searchIco$ = sel('.navbar__search-ico')
+searchIco$?.addEventListener('click', function () {
+  const searchInput$ = sel('.search__input')
+  window.setTimeout(() => {
+    searchInput$.focus()
+  }, 100)
+})
+
 const dataPage = sel('.page-wrapper')?.getAttribute('data-page')
 switch (dataPage) {
   case 'home':
