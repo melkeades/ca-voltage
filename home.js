@@ -213,35 +213,23 @@ export default function home() {
           params = { y: -(number + 10) * lineHeight + 'em', repeat: 1, duration: time / index }
           break
       }
-      mapNumbersTl.to('.map__num-' + index, params, 0).to(
-        dot$a,
-        {
-          keyframes: {
-            fillOpacity: [0, 1, 0.5],
-            scale: [0.5, 1.2, 1],
-          },
-          stagger: {
-            each: 0.8,
-          },
-          duration: time,
-        },
-        0
-      )
-
-      // .fromTo(
-      //   dot$a,
-      //   { opacity: 0, scale: 5 },
-      //   {
-      //     opacity: 1,
-      //     duration: time,
-      //     scale: 1,
-      //     stagger: {
-      //       each: 0.8,
-      //     },
-      //   },
-      //   0
-      // )
+      mapNumbersTl.to('.map__num-' + index, params, 0)
     })
+    mapNumbersTl.to(
+      dot$a,
+      {
+        keyframes: {
+          fillOpacity: [0, 1, 0.5],
+          scale: [0.5, 1.2, 1],
+        },
+        stagger: {
+          // each: 0.8,
+          amount: time,
+        },
+        // duration: time,
+      },
+      0
+    )
 
     ScrollTrigger.create({
       trigger: mapNum$,
