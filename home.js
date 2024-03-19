@@ -215,18 +215,20 @@ export default function home() {
       }
       mapNumbersTl.to('.map__num-' + index, params, 0)
     })
+    const dotStagger = 2
     mapNumbersTl.to(
-      dot$a,
+      [...dot$a],
       {
         keyframes: {
           fillOpacity: [0, 1, 0.5],
           scale: [0.5, 1.2, 1],
         },
         stagger: {
-          // each: 0.8,
-          amount: time,
+          // each: 0.5,
+          amount: dotStagger,
         },
-        // duration: time,
+
+        duration: time - dotStagger,
       },
       0
     )
