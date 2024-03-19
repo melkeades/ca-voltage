@@ -197,6 +197,9 @@ export default function home() {
     })
     mapNum$.replaceChildren(fragment)
 
+    const dot$a = selAll('#map__poc circle')
+    gsap.set(dot$a, { fillOpacity: 0 })
+
     const mapNumbersTl = gsap.timeline({ paused: true, defaults: { ease: 'none' } })
 
     numbers.forEach((number, i) => {
@@ -210,7 +213,34 @@ export default function home() {
           params = { y: -(number + 10) * lineHeight + 'em', repeat: 1, duration: time / index }
           break
       }
-      mapNumbersTl.to('.map__num-' + index, params, 0)
+      mapNumbersTl.to('.map__num-' + index, params, 0).to(
+        dot$a,
+        {
+          keyframes: {
+            fillOpacity: [0, 1, 0.5],
+            scale: [0.5, 1.2, 1],
+          },
+          stagger: {
+            each: 0.8,
+          },
+          duration: time,
+        },
+        0
+      )
+
+      // .fromTo(
+      //   dot$a,
+      //   { opacity: 0, scale: 5 },
+      //   {
+      //     opacity: 1,
+      //     duration: time,
+      //     scale: 1,
+      //     stagger: {
+      //       each: 0.8,
+      //     },
+      //   },
+      //   0
+      // )
     })
 
     ScrollTrigger.create({
