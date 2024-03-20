@@ -5,7 +5,7 @@ import Splide from '@splidejs/splide'
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll'
 import { Intersection } from '@splidejs/splide-extension-intersection'
 import '@splidejs/splide/css'
-import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, getSiblings, sel, selAll, vh, vw } from './utils'
+import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, getSiblings, sel, selAll, vh, vw, mm } from './utils'
 import ScrollToPlugin from 'gsap/ScrollToPlugin'
 
 import Home from './home'
@@ -43,6 +43,34 @@ if (navbarSticky$) {
   })
 }
 
+const navbarDd$a = selAll('.navbar__dd')
+mm.add('(min-width: 991px)', (context) => {
+  context.add('mouseenter', (e) => {
+    const el = e.target.parentNode.querySelector('.navbar__dd__list')
+    gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.3 }) // <- now it gets recorded in the Context
+  })
+  context.add('mouseleave', (e) => {
+    const to = e.toElement || e.relatedTarget
+    // console.log(e, to, to.classList.contains('navbar__cont'))
+    if (to.classList.contains('w-dropdown-list') || to.classList.contains('navbar__cont')) return
+
+    const el = e.target.parentNode.querySelector('.navbar__dd__list')
+    gsap.to(el, { opacity: 0, duration: 0.3 }) // <- now it gets recorded in the Context
+  })
+
+  navbarDd$a.forEach((dd) => {
+    dd.addEventListener('mouseenter', context.mouseenter)
+    dd.addEventListener('mouseleave', context.mouseleave)
+  })
+
+  return () => {
+    navbarDd$a.forEach((dd) => {
+      dd.removeEventListener('mouseenter', context.mouseenter)
+      dd.removeEventListener('mouseleave', context.mouseleave)
+    })
+  }
+})
+
 const navbarTabs$a = selAll('.navbar__dd__tab')
 function changeTabHandle(tab) {
   if (tab.classList.contains('w--current')) return
@@ -75,7 +103,6 @@ navbarTabs$a.forEach((tab) => {
     const link = linkedItem$.getAttribute('href')
     const name = linkedItem$.textContent
 
-    let mm = gsap.matchMedia()
     mm.add('(min-width: 991px)', (context) => {
       context.add('click', (e) => {
         e.stopPropagation()

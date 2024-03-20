@@ -6,13 +6,14 @@ import { Intersection } from '@splidejs/splide-extension-intersection'
 
 import '@splidejs/splide/css'
 
-import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, sel, selAll, vw } from './utils'
+import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, sel, selAll, vw, mm } from './utils'
 
 export default function home() {
   const mapLocationW$ = sel('.map__location-w')
   const location$a = mapLocationW$.querySelectorAll('.w-dyn-list .map__location')
   // const fragment = document.createDocumentFragment()
-  const mapPosition = sel('.map__map').getBoundingClientRect()
+  const map$ = sel('.map__map')
+  const mapPosition = map$.getBoundingClientRect()
   const markerRadius = sel('.map__state__fill').getBoundingClientRect().width / 2
 
   const mapWidth = mapPosition.width
@@ -27,6 +28,32 @@ export default function home() {
     const markerPosition = mapMarker$.getBoundingClientRect().x - mapPosition.x
     const xShift = ((markerPosition - mapWidth / 2) / mapWidth) * 50
     const yShift = -10
+
+    const dot$a = selAll('#map__poc circle')
+    gsap.set(dot$a, { fillOpacity: 0 })
+
+    const dotStagger = 1
+    ScrollTrigger.create({
+      trigger: map$,
+      start: 'top 25%',
+      animation: gsap.to(
+        dot$a,
+        {
+          keyframes: {
+            fillOpacity: [0, 1, 1],
+            fill: ['#fff', '#fff', '#43D845'],
+            scale: [0.5, 1.2, 1],
+          },
+          stagger: {
+            // each: 0.5,
+            amount: dotStagger,
+          },
+
+          duration: 1.8 - dotStagger,
+        },
+        0
+      ),
+    })
 
     if (markerPosition > mapWidth / 2) {
       location.classList.add('is--left')
@@ -43,6 +70,7 @@ export default function home() {
       .timeline({ defaults: { ease: 'power4.inOut', duration: 0.6 }, paused: true })
       .to(location, { opacity: 1, duration: 0.3 }, 0)
       .to(mapMarker$, { fill: 'white', duration: 0.3 }, 0)
+      .to(dot$a, { fill: 'white' }, 0)
       .to(
         mapStateWrap$,
         {
@@ -149,35 +177,6 @@ export default function home() {
     // markers: true,
   })
 
-  const navbarDd$a = selAll('.navbar__dd')
-  let mm = gsap.matchMedia()
-  mm.add('(min-width: 991px)', (context) => {
-    context.add('mouseenter', (e) => {
-      const el = e.target.parentNode.querySelector('.navbar__dd__list')
-      gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.3 }) // <- now it gets recorded in the Context
-    })
-    context.add('mouseleave', (e) => {
-      const to = e.toElement || e.relatedTarget
-      // console.log(e, to, to.classList.contains('navbar__cont'))
-      if (to.classList.contains('w-dropdown-list') || to.classList.contains('navbar__cont')) return
-
-      const el = e.target.parentNode.querySelector('.navbar__dd__list')
-      gsap.to(el, { opacity: 0, duration: 0.3 }) // <- now it gets recorded in the Context
-    })
-
-    navbarDd$a.forEach((dd) => {
-      dd.addEventListener('mouseenter', context.mouseenter)
-      dd.addEventListener('mouseleave', context.mouseleave)
-    })
-
-    return () => {
-      navbarDd$a.forEach((dd) => {
-        dd.removeEventListener('mouseenter', context.mouseenter)
-        dd.removeEventListener('mouseleave', context.mouseleave)
-      })
-    }
-  })
-
   function mapCounterInit() {
     const mapNum$ = sel('.map__h__num')
     // get the line height of the element in em
@@ -197,9 +196,6 @@ export default function home() {
     })
     mapNum$.replaceChildren(fragment)
 
-    const dot$a = selAll('#map__poc circle')
-    gsap.set(dot$a, { fillOpacity: 0 })
-
     const mapNumbersTl = gsap.timeline({ paused: true, defaults: { ease: 'none' } })
 
     numbers.forEach((number, i) => {
@@ -215,23 +211,6 @@ export default function home() {
       }
       mapNumbersTl.to('.map__num-' + index, params, 0)
     })
-    const dotStagger = 2
-    mapNumbersTl.to(
-      [...dot$a],
-      {
-        keyframes: {
-          fillOpacity: [0, 1, 0.5],
-          scale: [0.5, 1.2, 1],
-        },
-        stagger: {
-          // each: 0.5,
-          amount: dotStagger,
-        },
-
-        duration: time - dotStagger,
-      },
-      0
-    )
 
     ScrollTrigger.create({
       trigger: mapNum$,
