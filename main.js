@@ -5,7 +5,7 @@ import Splide from '@splidejs/splide'
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll'
 import { Intersection } from '@splidejs/splide-extension-intersection'
 import '@splidejs/splide/css'
-import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, getSiblings, sel, selAll, vh, vw, mm, onDomReady } from './utils'
+import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, getSiblings, sel, selAll, vh, vw, mm, onDomReady, initObserver } from './utils'
 import ScrollToPlugin from 'gsap/ScrollToPlugin'
 
 import Home from './home'
@@ -86,18 +86,18 @@ function changeTabHandle(tab) {
   const newPane$ = sel('#' + tab.getAttribute('aria-controls'))
   newPane$.classList.add('w--tab-active')
 }
-onDomReady(() => {
-  navbarTabs$a.forEach((tab) => {
-    tab.addEventListener('mouseenter', function () {
-      changeTabHandle(this)
-    })
-    tab.addEventListener('click', function (e) {
-      // e.preventDefault()
-      e.stopPropagation()
-      changeTabHandle(this)
-    })
-    // update the link and name in accordance with the locale if it's a product tab
-    if (tab.classList.contains('is-product')) {
+navbarTabs$a.forEach((tab) => {
+  tab.addEventListener('mouseenter', function () {
+    changeTabHandle(this)
+  })
+  tab.addEventListener('click', function (e) {
+    // e.preventDefault()
+    e.stopPropagation()
+    changeTabHandle(this)
+  })
+  // update the link and name in accordance with the locale if it's a product tab
+  if (tab.classList.contains('is-product')) {
+    initObserver(tab, 100, 'tab', () => {
       const linkedPane$ = sel('#' + tab.getAttribute('aria-controls'))
       const linkedItem$ = linkedPane$?.querySelector('.navbar__cat-data')
       const link = linkedItem$?.getAttribute('href')
@@ -115,8 +115,8 @@ onDomReady(() => {
       })
       tab.textContent = name
       linkedPane$?.querySelector('.mm__a').setAttribute('href', link)
-    }
-  })
+    })
+  }
 })
 
 const searchIco$ = sel('.navbar__search-ico')

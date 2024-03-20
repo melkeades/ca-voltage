@@ -243,6 +243,23 @@ export function addObserver(element, className, callback) {
   })
 }
 
+export function initObserver(element$, timeout = 100, observerName = 'default', callback) {
+  if (element$.observer?.[observerName]) return
+  let timerId = 0
+
+  const observer = new MutationObserver(function (mutations) {
+    clearTimeout(timerId)
+    timerId = setTimeout(() => {
+      // console.log(observerName, element$)
+      callback()
+      // observer.disconnect()
+    }, timeout)
+  })
+  observer.observe(element$, { childList: true, attributes: false })
+  element$.observer = element$.observer || {}
+  element$.observer[observerName] = observer
+}
+
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
