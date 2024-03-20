@@ -5,7 +5,7 @@ import Splide from '@splidejs/splide'
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll'
 import { Intersection } from '@splidejs/splide-extension-intersection'
 import '@splidejs/splide/css'
-import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, getSiblings, sel, selAll, vh, vw, mm } from './utils'
+import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, getSiblings, sel, selAll, vh, vw, mm, onDomReady } from './utils'
 import ScrollToPlugin from 'gsap/ScrollToPlugin'
 
 import Home from './home'
@@ -86,36 +86,37 @@ function changeTabHandle(tab) {
   const newPane$ = sel('#' + tab.getAttribute('aria-controls'))
   newPane$.classList.add('w--tab-active')
 }
-
-navbarTabs$a.forEach((tab) => {
-  tab.addEventListener('mouseenter', function () {
-    changeTabHandle(this)
-  })
-  tab.addEventListener('click', function (e) {
-    // e.preventDefault()
-    e.stopPropagation()
-    changeTabHandle(this)
-  })
-  // update the link and name in accordance with the locale if it's a product tab
-  if (tab.classList.contains('is-product')) {
-    const linkedPane$ = sel('#' + tab.getAttribute('aria-controls'))
-    const linkedItem$ = linkedPane$?.querySelector('.navbar__cat-data')
-    const link = linkedItem$?.getAttribute('href')
-    const name = linkedItem$?.textContent
-
-    mm.add('(min-width: 991px)', (context) => {
-      context.add('click', (e) => {
-        e.stopPropagation()
-        window.open(link, '_self')
-      })
-      tab.addEventListener('click', context.click)
-      return () => {
-        tab.removeEventListener('click', context.click)
-      }
+onDomReady(() => {
+  navbarTabs$a.forEach((tab) => {
+    tab.addEventListener('mouseenter', function () {
+      changeTabHandle(this)
     })
-    tab.textContent = name
-    linkedPane$?.querySelector('.mm__a').setAttribute('href', link)
-  }
+    tab.addEventListener('click', function (e) {
+      // e.preventDefault()
+      e.stopPropagation()
+      changeTabHandle(this)
+    })
+    // update the link and name in accordance with the locale if it's a product tab
+    if (tab.classList.contains('is-product')) {
+      const linkedPane$ = sel('#' + tab.getAttribute('aria-controls'))
+      const linkedItem$ = linkedPane$?.querySelector('.navbar__cat-data')
+      const link = linkedItem$?.getAttribute('href')
+      const name = linkedItem$?.textContent
+
+      mm.add('(min-width: 991px)', (context) => {
+        context.add('click', (e) => {
+          e.stopPropagation()
+          window.open(link, '_self')
+        })
+        tab.addEventListener('click', context.click)
+        return () => {
+          tab.removeEventListener('click', context.click)
+        }
+      })
+      tab.textContent = name
+      linkedPane$?.querySelector('.mm__a').setAttribute('href', link)
+    }
+  })
 })
 
 const searchIco$ = sel('.navbar__search-ico')
