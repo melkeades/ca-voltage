@@ -29,32 +29,6 @@ export default function home() {
     const xShift = ((markerPosition - mapWidth / 2) / mapWidth) * 50
     const yShift = -10
 
-    const dot$a = selAll('#map__poc circle')
-    gsap.set(dot$a, { fillOpacity: 0 })
-
-    const dotStagger = 1
-    ScrollTrigger.create({
-      trigger: map$,
-      start: 'top 25%',
-      animation: gsap.to(
-        dot$a,
-        {
-          keyframes: {
-            fillOpacity: [0, 1, 1],
-            fill: ['#fff', '#fff', '#43D845'],
-            scale: [0.5, 1.2, 1],
-          },
-          stagger: {
-            // each: 0.5,
-            amount: dotStagger,
-          },
-
-          duration: 1.8 - dotStagger,
-        },
-        0
-      ),
-    })
-
     if (markerPosition > mapWidth / 2) {
       location.classList.add('is--left')
     }
@@ -70,7 +44,6 @@ export default function home() {
       .timeline({ defaults: { ease: 'power4.inOut', duration: 0.6 }, paused: true })
       .to(location, { opacity: 1, duration: 0.3 }, 0)
       .to(mapMarker$, { fill: 'white', duration: 0.3 }, 0)
-      .to(dot$a, { fill: 'white' }, 0)
       .to(
         mapStateWrap$,
         {
@@ -94,6 +67,36 @@ export default function home() {
         { strokeDashoffset: 0, strokeDasharray: lineLength + ' ' + lineLength, duration: 0.3 },
         0.3
       )
+
+    const dot$a = mapState$.querySelectorAll('#map__poc circle')
+    const dotStagger = 1
+    if (dot$a.length > 0) {
+      gsap.set(dot$a, { fillOpacity: 0 })
+
+      locationTl[state].to(dot$a, { fill: 'white' }, 0)
+
+      ScrollTrigger.create({
+        trigger: map$,
+        start: 'top 25%',
+        animation: gsap.to(
+          dot$a,
+          {
+            keyframes: {
+              fillOpacity: [0, 1, 1],
+              fill: ['#fff', '#fff', '#43D845'],
+              scale: [0.5, 1.2, 1],
+            },
+            stagger: {
+              // each: 0.5,
+              amount: dotStagger,
+            },
+
+            duration: 1.8 - dotStagger,
+          },
+          0
+        ),
+      })
+    }
 
     // fragment.appendChild(location)
   })
