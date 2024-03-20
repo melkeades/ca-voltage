@@ -95,28 +95,31 @@ navbarTabs$a.forEach((tab) => {
     e.stopPropagation()
     changeTabHandle(this)
   })
+
   // update the link and name in accordance with the locale if it's a product tab
   if (tab.classList.contains('is-product')) {
-    const linkedPane$ = sel('#' + tab.getAttribute('aria-controls'))
-    const linkedItem$ = linkedPane$?.querySelector('.navbar__cat-data')
-    const link = linkedItem$?.getAttribute('href')
-    const name = linkedItem$?.textContent
+    setTimeout(() => {
+      const linkedPane$ = sel('#' + tab.getAttribute('aria-controls'))
+      const linkedItem$ = linkedPane$?.querySelector('.navbar__cat-data')
+      const link = linkedItem$?.getAttribute('href')
+      const name = linkedItem$?.textContent
 
-    mm.add('(min-width: 991px)', (context) => {
-      context.add('click', (e) => {
-        e.stopPropagation()
-        window.open(link, '_self')
+      mm.add('(min-width: 991px)', (context) => {
+        context.add('click', (e) => {
+          e.stopPropagation()
+          window.open(link, '_self')
+        })
+        tab.addEventListener('click', context.click)
+        return () => {
+          tab.removeEventListener('click', context.click)
+        }
       })
-      tab.addEventListener('click', context.click)
-      return () => {
-        tab.removeEventListener('click', context.click)
-      }
-    })
-    tab.textContent = name
-    linkedPane$?.querySelector('.mm__a').setAttribute('href', link)
-    initObserver(linkedItem$, 100, 'tab', () => {
-      console.log('oo')
-    })
+      tab.textContent = name
+      linkedPane$?.querySelector('.mm__a').setAttribute('href', link)
+      // initObserver(linkedItem$, 100, 'tab', () => {
+      //   console.log('oo')
+      // })
+    }, 500)
   }
 })
 

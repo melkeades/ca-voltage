@@ -244,7 +244,7 @@ export function addObserver(element, className, callback) {
 }
 
 export function initObserver(element$, timeout = 100, observerName = 'default', callback) {
-  if (element$.observer?.[observerName]) return
+  if (element$?.observer?.[observerName]) return
   let timerId = 0
 
   const observer = new MutationObserver(function (mutations) {
