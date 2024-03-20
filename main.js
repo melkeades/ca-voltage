@@ -52,7 +52,7 @@ mm.add('(min-width: 991px)', (context) => {
   context.add('mouseleave', (e) => {
     const to = e.toElement || e.relatedTarget
     // console.log(e, to, to.classList.contains('navbar__cont'))
-    if (to.classList.contains('w-dropdown-list') || to.classList.contains('navbar__cont')) return
+    if (to?.classList.contains('w-dropdown-list') || to?.classList.contains('navbar__cont')) return
 
     const el = e.target.parentNode.querySelector('.navbar__dd__list')
     gsap.to(el, { opacity: 0, duration: 0.3 }) // <- now it gets recorded in the Context
@@ -97,24 +97,25 @@ navbarTabs$a.forEach((tab) => {
   })
   // update the link and name in accordance with the locale if it's a product tab
   if (tab.classList.contains('is-product')) {
-    initObserver(tab, 100, 'tab', () => {
-      const linkedPane$ = sel('#' + tab.getAttribute('aria-controls'))
-      const linkedItem$ = linkedPane$?.querySelector('.navbar__cat-data')
-      const link = linkedItem$?.getAttribute('href')
-      const name = linkedItem$?.textContent
+    const linkedPane$ = sel('#' + tab.getAttribute('aria-controls'))
+    const linkedItem$ = linkedPane$?.querySelector('.navbar__cat-data')
+    const link = linkedItem$?.getAttribute('href')
+    const name = linkedItem$?.textContent
 
-      mm.add('(min-width: 991px)', (context) => {
-        context.add('click', (e) => {
-          e.stopPropagation()
-          window.open(link, '_self')
-        })
-        tab.addEventListener('click', context.click)
-        return () => {
-          tab.removeEventListener('click', context.click)
-        }
+    mm.add('(min-width: 991px)', (context) => {
+      context.add('click', (e) => {
+        e.stopPropagation()
+        window.open(link, '_self')
       })
-      tab.textContent = name
-      linkedPane$?.querySelector('.mm__a').setAttribute('href', link)
+      tab.addEventListener('click', context.click)
+      return () => {
+        tab.removeEventListener('click', context.click)
+      }
+    })
+    tab.textContent = name
+    linkedPane$?.querySelector('.mm__a').setAttribute('href', link)
+    initObserver(linkedItem$, 100, 'tab', () => {
+      console.log('oo')
     })
   }
 })

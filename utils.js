@@ -255,7 +255,7 @@ export function initObserver(element$, timeout = 100, observerName = 'default', 
       // observer.disconnect()
     }, timeout)
   })
-  observer.observe(element$, { childList: true, attributes: false })
+  observer.observe(element$, { childList: true, attributes: true })
   element$.observer = element$.observer || {}
   element$.observer[observerName] = observer
 }
