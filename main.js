@@ -99,9 +99,9 @@ navbarTabs$a.forEach((tab) => {
   // update the link and name in accordance with the locale if it's a product tab
   if (tab.classList.contains('is-product')) {
     const linkedPane$ = sel('#' + tab.getAttribute('aria-controls'))
-    const linkedItem$ = linkedPane$.querySelector('.navbar__cat-data')
-    const link = linkedItem$.getAttribute('href')
-    const name = linkedItem$.textContent
+    const linkedItem$ = linkedPane$?.querySelector('.navbar__cat-data')
+    const link = linkedItem$?.getAttribute('href')
+    const name = linkedItem$?.textContent
 
     mm.add('(min-width: 991px)', (context) => {
       context.add('click', (e) => {
@@ -114,7 +114,7 @@ navbarTabs$a.forEach((tab) => {
       }
     })
     tab.textContent = name
-    linkedPane$.querySelector('.mm__a').setAttribute('href', link)
+    linkedPane$?.querySelector('.mm__a').setAttribute('href', link)
   }
 })
 
