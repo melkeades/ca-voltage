@@ -28,6 +28,7 @@ export default function home() {
     const markerPosition = mapMarker$?.getBoundingClientRect().x - mapPosition.x
     const xShift = ((markerPosition - mapWidth / 2) / mapWidth) * 50
     const yShift = -10
+    const green = '#43D845'
 
     if (markerPosition > mapWidth / 2) {
       location.classList.add('is--left')
@@ -75,7 +76,7 @@ export default function home() {
 
       gsap.set(dot$a, { fillOpacity: 0 })
 
-      locationTl[state].to(dot$a, { fill: 'white' }, 0)
+      locationTl[state].fromTo(dot$a, { fill: green }, { fill: 'white' }, 0)
 
       ScrollTrigger.create({
         trigger: map$,
@@ -85,7 +86,7 @@ export default function home() {
           {
             keyframes: {
               fillOpacity: [0, 1, 1],
-              fill: ['#fff', '#fff', '#43D845'],
+              fill: ['#fff', '#fff', green],
               scale: [0.5, 1.2, 1],
             },
             stagger: {
