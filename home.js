@@ -22,10 +22,10 @@ export default function home() {
   location$a.forEach((location) => {
     const state = location.dataset.map
     const mapState$ = sel('#' + state)
-    const mapStateWrap$ = mapState$.querySelector('.map__state-in')
-    const mapStateW$ = mapState$.querySelector('.map__state')
-    const mapMarker$ = mapState$.querySelector('.map__state__fill')
-    const markerPosition = mapMarker$.getBoundingClientRect().x - mapPosition.x
+    const mapStateWrap$ = mapState$?.querySelector('.map__state-in')
+    const mapStateW$ = mapState$?.querySelector('.map__state')
+    const mapMarker$ = mapState$?.querySelector('.map__state__fill')
+    const markerPosition = mapMarker$?.getBoundingClientRect().x - mapPosition.x
     const xShift = ((markerPosition - mapWidth / 2) / mapWidth) * 50
     const yShift = -10
 
@@ -34,7 +34,7 @@ export default function home() {
     }
 
     location.style.left = ((markerPosition + markerRadius + xShift) / mapWidth) * 100 + '%'
-    location.style.top = mapMarker$.getBoundingClientRect().y + markerRadius - mapPosition.y + yShift + 'px'
+    location.style.top = mapMarker$?.getBoundingClientRect().y + markerRadius - mapPosition.y + yShift + 'px'
     const line$ = location.querySelector('.map__line path')
     line$.setAttribute('d', `M0 100L150 10H${location.getBoundingClientRect().width}`)
 
@@ -68,9 +68,11 @@ export default function home() {
         0.3
       )
 
-    const dot$a = mapState$.querySelectorAll('#map__poc circle')
+    const dot$a = mapState$?.querySelectorAll('.map__state__dot-w circle')
     const dotStagger = 1
-    if (dot$a.length > 0) {
+    if (dot$a?.length > 0) {
+      console.log('asdf')
+
       gsap.set(dot$a, { fillOpacity: 0 })
 
       locationTl[state].to(dot$a, { fill: 'white' }, 0)

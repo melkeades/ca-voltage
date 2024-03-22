@@ -7,7 +7,6 @@ import { Intersection } from '@splidejs/splide-extension-intersection'
 import '@splidejs/splide/css'
 import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, getSiblings, sel, selAll, vh, vw, mm, onDomReady, initObserver } from './utils'
 import ScrollToPlugin from 'gsap/ScrollToPlugin'
-
 import Home from './home'
 import About from './about'
 import Services from './services'
