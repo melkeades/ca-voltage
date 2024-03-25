@@ -18,6 +18,10 @@ export default function home() {
 
   const mapWidth = mapPosition.width
   // const mapWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+  // const hoverBlue = getComputedStyle(document.documentElement).getPropertyValue('--base-color-brand--light-gray')
+  const hoverBlue = '#b9e0ff'
+  const green = '#43D845'
+
   let locationTl = {}
   location$a.forEach((location) => {
     const state = location.dataset.map
@@ -25,26 +29,28 @@ export default function home() {
     const mapStateWrap$ = mapState$?.querySelector('.map__state-in')
     const mapStateW$ = mapState$?.querySelector('.map__state')
     const mapMarker$ = mapState$?.querySelector('.map__state__fill')
+    if (!mapMarker$) return
+    const mapMarkerStroke$ = mapState$?.querySelector('.map__state__stroke')
+
     const markerPosition = mapMarker$?.getBoundingClientRect().x - mapPosition.x
     const xShift = ((markerPosition - mapWidth / 2) / mapWidth) * 50
     const yShift = -10
-    const green = '#43D845'
+    // read and assign css variable to color
 
     if (markerPosition > mapWidth / 2) {
       location.classList.add('is--left')
     }
-
     location.style.left = ((markerPosition + markerRadius + xShift) / mapWidth) * 100 + '%'
     location.style.top = mapMarker$?.getBoundingClientRect().y + markerRadius - mapPosition.y + yShift + 'px'
     const line$ = location.querySelector('.map__line path')
     line$.setAttribute('d', `M0 100L150 10H${location.getBoundingClientRect().width}`)
-
     const lineLength = line$.getTotalLength()
 
     locationTl[state] = gsap
       .timeline({ defaults: { ease: 'power4.inOut', duration: 0.6 }, paused: true })
       .to(location, { opacity: 1, duration: 0.3 }, 0)
-      .to(mapMarker$, { fill: 'white', duration: 0.3 }, 0)
+      .to(mapMarker$, { fill: hoverBlue, duration: 0.3 }, 0)
+      .to(mapMarkerStroke$, { stroke: hoverBlue, duration: 0.3 }, 0)
       .to(
         mapStateWrap$,
         {
@@ -72,8 +78,6 @@ export default function home() {
     const dot$a = mapState$?.querySelectorAll('.map__state__dot-w circle')
     const dotStagger = 1
     if (dot$a?.length > 0) {
-      console.log('asdf')
-
       gsap.set(dot$a, { fillOpacity: 0 })
 
       locationTl[state].fromTo(dot$a, { fill: green }, { fill: 'white' }, 0)
