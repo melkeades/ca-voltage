@@ -89,10 +89,11 @@ export default function home() {
           dot$a,
           {
             keyframes: {
-              fillOpacity: [0, 1, 1],
+              fillOpacity: [0, 1, 0.5],
               fill: ['#fff', '#fff', green],
-              scale: [0.5, 1.2, 1],
+              scale: [0.5, 3, 2],
             },
+            transformOrigin: 'center',
             stagger: {
               // each: 0.5,
               amount: dotStagger,
