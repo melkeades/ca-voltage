@@ -3,6 +3,7 @@ export const selAll = (e) => document.querySelectorAll(e)
 export const vh = (percent) => window.innerHeight * (percent / 100)
 export const vw = (percent) => window.innerWidth * (percent / 100)
 export const mm = gsap.matchMedia()
+export const repeatArr = (arr, n) => [].concat(...Array(n).fill(arr))
 
 const isDomEl = (el) => el instanceof Document || el instanceof Element
 const l = (...e) => console.log(...e)

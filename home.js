@@ -6,13 +6,14 @@ import { Intersection } from '@splidejs/splide-extension-intersection'
 
 import '@splidejs/splide/css'
 
-import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, sel, selAll, vw, mm } from './utils'
+import { addSplideClasses, connectSplideArrows, connectSplideBullets, debounce, sel, selAll, vw, mm, onDomReady, repeatArr } from './utils'
 
 export default function home() {
   const mapLocationW$ = sel('.map__location-w')
   const location$a = mapLocationW$.querySelectorAll('.w-dyn-list .map__location')
   // const fragment = document.createDocumentFragment()
   const map$ = sel('.map__map')
+  const mapSvg$ = sel('.map-svg')
   const mapPosition = map$.getBoundingClientRect()
   const markerRadius = sel('.map__state__fill').getBoundingClientRect().width / 2
 
@@ -21,102 +22,187 @@ export default function home() {
   // const hoverBlue = getComputedStyle(document.documentElement).getPropertyValue('--base-color-brand--light-gray')
   const hoverBlue = '#b9e0ff'
   const green = '#43D845'
+  const svgNs = 'http://www.w3.org/2000/svg'
 
   let locationTl = {}
-  location$a.forEach((location) => {
-    const state = location.dataset.map
-    const mapState$ = sel('#' + state)
-    const mapStateWrap$ = mapState$?.querySelector('.map__state-in')
-    const mapStateW$ = mapState$?.querySelector('.map__state')
-    const mapMarker$ = mapState$?.querySelector('.map__state__fill')
-    if (!mapMarker$) return
-    const mapMarkerStroke$ = mapState$?.querySelector('.map__state__stroke')
+  const mwArr = repeatArr([80, 70, 55, 65, 120, 90, 140, 110, 75, 130, 140, 55, 100, 105, 80, 130], 100)
+  console.log(mwArr)
 
-    const markerPosition = mapMarker$?.getBoundingClientRect().x - mapPosition.x
-    const xShift = ((markerPosition - mapWidth / 2) / mapWidth) * 50
-    const yShift = -10
-    // read and assign css variable to color
+  // function addSvgAttr(el, attr, value) {
+  function addSvgAttr(el, attrArr) {
+    if (!el || !attrArr) return
 
-    if (markerPosition > mapWidth / 2) {
-      location.classList.add('is--left')
-    }
-    location.style.left = ((markerPosition + markerRadius + xShift) / mapWidth) * 100 + '%'
-    location.style.top = mapMarker$?.getBoundingClientRect().y + markerRadius - mapPosition.y + yShift + 'px'
-    const line$ = location.querySelector('.map__line path')
-    line$.setAttribute('d', `M0 100L150 10H${location.getBoundingClientRect().width}`)
-    const lineLength = line$.getTotalLength()
+    attrArr.forEach((attr) => {
+      const [attrName, value] = [attr[0], attr[1]]
 
-    locationTl[state] = gsap
-      .timeline({ defaults: { ease: 'power4.inOut', duration: 0.6 }, paused: true })
-      .to(location, { opacity: 1, duration: 0.3 }, 0)
-      .to(mapMarker$, { fill: hoverBlue, duration: 0.3 }, 0)
-      .to(mapMarkerStroke$, { stroke: hoverBlue, duration: 0.3 }, 0)
-      .to(
-        mapStateWrap$,
-        {
-          x: xShift,
-          y: yShift,
-          scale: 1.1,
-          filter: 'drop-shadow(0px 40px 20px rgba(46, 83, 127, 0.25))',
-          transformOrigin: 'center',
-        },
-        0
-      )
-      .to(mapStateW$, { fill: '#1999F7' }, 0)
-      // .to(mapStateW$, { y: -10, fill: 'var(--base-color-brand--blue)' }, 0)
-      .from(location.querySelector('.map__location__info'), { y: 30, ease: 'power2.out' }, 0)
-      .fromTo(
-        line$,
-        {
-          strokeDashoffset: 0, // where is starts
-          strokeDasharray: 0 + ' ' + lineLength, // dash length and gap length
-        },
-        { strokeDashoffset: 0, strokeDasharray: lineLength + ' ' + lineLength, duration: 0.3 },
-        0.3
-      )
+      if (!attrName || !value) return
+      el.setAttributeNS(null, attrName, value)
+    })
+  }
+  function getTextWidth(text, font) {
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')
+    context.font = font || getComputedStyle(document.body).font
+    return context.measureText(text).width
+  }
+  function getTextHeight(text, font) {
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')
+    context.font = font || getComputedStyle(document.body).font
+    return context.measureText(text).actualBoundingBoxAscent + context.measureText(text).actualBoundingBoxDescent
+  }
+  onDomReady(() => {
+    location$a.forEach((location) => {
+      const state = location.dataset.map
+      const mapState$ = sel('#' + state)
+      const mapStateC$ = mapState$?.querySelector('.map__state-in')
+      const mapStateW$ = mapState$?.querySelector('.map__state')
+      const mapMarker$ = mapState$?.querySelector('.map__state__fill')
 
-    const dot$a = mapState$?.querySelectorAll('.map__state__dot-w circle')
-    const dotStagger = 1
-    if (dot$a?.length > 0) {
-      gsap.set(dot$a, { fillOpacity: 0 })
+      if (!mapMarker$) return
+      const mapMarkerStroke$ = mapState$?.querySelector('.map__state__stroke')
 
-      locationTl[state].fromTo(dot$a, { fill: green }, { fill: 'white' }, 0)
+      const markerPosition = mapMarker$?.getBoundingClientRect().x - mapPosition.x
+      const xShift = ((markerPosition - mapWidth / 2) / mapWidth) * 50
+      const yShift = -10
+      // read and assign css variable to color
 
-      ScrollTrigger.create({
-        trigger: map$,
-        start: 'top 25%',
-        animation: gsap.to(
-          dot$a,
+      if (markerPosition > mapWidth / 2) {
+        location.classList.add('is--left')
+      }
+      location.style.left = ((markerPosition + markerRadius + xShift) / mapWidth) * 100 + '%'
+      location.style.top = mapMarker$?.getBoundingClientRect().y + markerRadius - mapPosition.y + yShift + 'px'
+      const line$ = location.querySelector('.map__line path')
+      line$.setAttribute('d', `M0 100L150 10H${location.getBoundingClientRect().width}`)
+      const lineLength = line$.getTotalLength()
+
+      locationTl[state] = gsap
+        .timeline({ defaults: { ease: 'power4.inOut', duration: 0.6 }, paused: true })
+        .to(location, { opacity: 1, duration: 0.3 }, 0)
+        .to(mapMarker$, { fill: hoverBlue, duration: 0.3 }, 0)
+        .to(mapMarkerStroke$, { stroke: hoverBlue, duration: 0.3 }, 0)
+        .to(
+          mapStateC$,
           {
-            keyframes: {
-              fillOpacity: [0, 1, 0.5],
-              fill: ['#fff', '#fff', green],
-              scale: [0.5, 3, 2],
-            },
+            x: xShift,
+            y: yShift,
+            scale: 1.1,
+            filter: 'drop-shadow(0px 40px 20px rgba(46, 83, 127, 0.25))',
             transformOrigin: 'center',
-            stagger: {
-              // each: 0.5,
-              amount: dotStagger,
-            },
-
-            duration: 1.8 - dotStagger,
           },
           0
-        ),
-      })
-    }
+        )
+        .to(mapStateW$, { fill: '#1999F7' }, 0)
+        // .to(mapStateW$, { y: -10, fill: 'var(--base-color-brand--blue)' }, 0)
+        .from(location.querySelector('.map__location__info'), { y: 30, ease: 'power2.out' }, 0)
+        .fromTo(
+          line$,
+          {
+            strokeDashoffset: 0, // where is starts
+            strokeDasharray: 0 + ' ' + lineLength, // dash length and gap length
+          },
+          { strokeDashoffset: 0, strokeDasharray: lineLength + ' ' + lineLength, duration: 0.3 },
+          0.3
+        )
 
-    // fragment.appendChild(location)
+      const dot$a = mapState$?.querySelectorAll('.map__pin')
+      const dotBg$a = mapState$?.querySelectorAll('.map__pin__bg')
+      const dotStagger = 1
+      if (dot$a?.length > 0) {
+        gsap.set(dot$a, { opacity: 0 })
+
+        // locationTl[state].fromTo(dot$a, { fill: green }, { fill: 'white' }, 0)
+        const dotTl = gsap
+          .timeline({ defaults: { duration: 1.8 - dotStagger, stagger: { amount: dotStagger } }, paused: true })
+          .to(dot$a, { opacity: 1 }, 0)
+          .to(dotBg$a, { keyframes: { scale: [0.5, 1.5, 1] }, transformOrigin: 'center' }, 0)
+
+        ScrollTrigger.create({
+          trigger: map$,
+          start: 'top 25%',
+          animation: dotTl,
+        })
+        let dotShiftI = 0
+        dot$a.forEach((dot, i) => {
+          dot.style.pointerEvents = 'auto'
+          const pinBb = dot.querySelector('.map__pin__bg').getBBox()
+          const pinX = pinBb.x
+          const pinY = pinBb.y
+          const pinWidth = pinBb.width
+
+          const text = document.createElementNS(svgNs, 'text')
+          dotShiftI += i
+          const textContent = mwArr[dotShiftI] + 'MW'
+          text.textContent = textContent
+          const textSize = '1rem'
+          const textFont = 'sans-serif'
+          const padding = 10
+          const textProps = textSize + ' ' + textFont
+          const textWidth = getTextWidth(textContent, textProps)
+          const textHeight = getTextHeight(textContent, textProps)
+          const textX = pinX - textWidth / 2 + pinWidth / 2
+          const textY = pinY - 15
+          addSvgAttr(text, [
+            ['x', textX],
+            ['y', textY],
+            ['font-family', textFont],
+            ['font-size', textSize],
+          ])
+
+          const svgGroup = document.createElementNS(svgNs, 'g')
+          addSvgAttr(svgGroup, [
+            ['class', 'map__tooltip'],
+            ['data-pin', i.toString()],
+          ])
+
+          svgGroup.appendChild(text)
+
+          const bg = document.createElementNS(svgNs, 'rect')
+          addSvgAttr(bg, [
+            ['x', textX - padding],
+            ['y', textY - textHeight - padding],
+            ['width', textWidth + padding * 2],
+            ['height', textHeight + padding * 2],
+            ['fill', 'white'],
+            ['rx', '5'],
+          ])
+          svgGroup.prepend(bg)
+
+          const pointer = document.createElementNS(svgNs, 'path')
+          const pointerWidth = 10
+          addSvgAttr(pointer, [
+            // "M0 0 h8 l-4 4 0 0Z"
+            ['d', 'M' + (textX + textWidth / 2 - pointerWidth / 2) + ' ' + (textY + padding - 1) + ' h' + pointerWidth + ' l-' + pointerWidth / 2 + ' 5 0 0Z'],
+            ['fill', 'white'],
+          ])
+          svgGroup.appendChild(pointer)
+
+          mapStateC$.appendChild(svgGroup)
+          const tl = gsap.timeline({ paused: true, defaults: {} }).to(svgGroup, { y: -5, opacity: 1, duration: 0.3 })
+          dot.addEventListener('mouseenter', function () {
+            tl.play()
+          })
+          dot.addEventListener('mouseleave', function () {
+            tl.reverse()
+          })
+          // dot.onmouseenter = () => {
+          //   tl.play()
+          // }
+          // dot.onmouseleave = () => {
+          //   tl.reverse()
+          // }
+        })
+      }
+    })
   })
-
   // mapLocationW$.querySelector('.location__info-slider').replaceChildren(fragment)
 
   const mapStateW$ = selAll('.map__state-w')
   mapStateW$.forEach((mapState) => {
-    mapState.addEventListener('mouseenter', function () {
+    mapState.addEventListener('mouseenter', function (e) {
       locationTl[this.id].play()
     })
-    mapState.addEventListener('mouseleave', function () {
+    mapState.addEventListener('mouseleave', function (e) {
       locationTl[this.id].reverse()
     })
   })
