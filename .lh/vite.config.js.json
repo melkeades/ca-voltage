@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 3,
             "patches": [
                 {
                     "date": 1707852637125,
@@ -16,6 +16,10 @@
                 {
                     "date": 1708164242783,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,10 @@\n       usePolling: true,\r\n     },\r\n   },\r\n   build: {\r\n-    sourcemap: 'inline',\r\n+    // sourcemap: 'inline',\r\n+    sourcemap: true,\r\n     minify: true,\r\n     manifest: true,\r\n     rollupOptions: {\r\n       input: './main.js',\r\n"
+                },
+                {
+                    "date": 1720183353376,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,12 +7,12 @@\n   // plugins: [eslintPlugin({ cache: false })],\r\n   // plugins: [basicSsl()],\r\n   server: {\r\n     // https: true,\r\n-    host: 'localhost',\r\n+    host: '127.0.0.1',\r\n     cors: '*',\r\n     hmr: {\r\n-      host: 'localhost',\r\n+      host: '127.0.0.1',\r\n       protocol: 'ws',\r\n     },\r\n     watch: {\r\n       usePolling: true,\r\n"
                 }
             ],
             "date": 1707852637125,

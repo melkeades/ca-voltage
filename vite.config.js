@@ -8,10 +8,10 @@ export default defineConfig({
   // plugins: [basicSsl()],
   server: {
     // https: true,
-    host: 'localhost',
+    host: '127.0.0.1',
     cors: '*',
     hmr: {
-      host: 'localhost',
+      host: '127.0.0.1',
       protocol: 'ws',
     },
     watch: {

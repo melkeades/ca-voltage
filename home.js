@@ -26,7 +26,7 @@ export default function home() {
 
   let locationTl = {}
   const mwArr = repeatArr([80, 70, 55, 65, 120, 90, 140, 110, 75, 130, 140, 55, 100, 105, 80, 130], 100)
-  console.log(mwArr)
+  // console.log(mwArr)
 
   // function addSvgAttr(el, attr, value) {
   function addSvgAttr(el, attrArr) {
@@ -57,12 +57,12 @@ export default function home() {
       const mapState$ = sel('#' + state)
       const mapStateC$ = mapState$?.querySelector('.map__state-in')
       const mapStateW$ = mapState$?.querySelector('.map__state')
-      const mapMarker$ = mapState$?.querySelector('.map__state__fill')
+      const mapMarkerFill$ = mapState$?.querySelector('.map__state__fill')
 
-      if (!mapMarker$) return
+      if (!mapMarkerFill$) return
       const mapMarkerStroke$ = mapState$?.querySelector('.map__state__stroke')
 
-      const markerPosition = mapMarker$?.getBoundingClientRect().x - mapPosition.x
+      const markerPosition = mapMarkerFill$?.getBoundingClientRect().x - mapPosition.x
       const xShift = ((markerPosition - mapWidth / 2) / mapWidth) * 50
       const yShift = -10
       // read and assign css variable to color
@@ -71,16 +71,51 @@ export default function home() {
         location.classList.add('is--left')
       }
       location.style.left = ((markerPosition + markerRadius + xShift) / mapWidth) * 100 + '%'
-      location.style.top = mapMarker$?.getBoundingClientRect().y + markerRadius - mapPosition.y + yShift + 'px'
+      location.style.top = mapMarkerFill$?.getBoundingClientRect().y + markerRadius - mapPosition.y + yShift + 'px'
       const line$ = location.querySelector('.map__line path')
       line$.setAttribute('d', `M0 100L150 10H${location.getBoundingClientRect().width}`)
       const lineLength = line$.getTotalLength()
 
+      // add number of the V dots
+      const pinW$ = mapMarkerFill$?.parentElement
+      // const pinW$ = mapState$.querySelector('.map__state__marker')
+      let mapPinNum$
+      if (pinW$) {
+        const pinX = pinW$.getBBox().x
+        const pinY = pinW$.getBBox().y
+        const pinWidth = pinW$.getBBox().width
+        const pinHeight = pinW$.getBBox().height
+        const dotNum = mapState$.querySelectorAll('.map__pin').length || 0
+        // console.log(state, dotNum)
+        mapPinNum$ = document.createElementNS(svgNs, 'text')
+        mapPinNum$.textContent = dotNum
+        const textSize = '0.875rem'
+        const textFont = 'sans-serif'
+        const textWeight = 'bold'
+        const textProps = textWeight + ' ' + textSize + ' ' + textFont
+        const textWidth = getTextWidth(dotNum, textProps)
+        const textHeight = getTextHeight(dotNum, textProps)
+        const textX = pinX - textWidth / 2 + pinWidth / 2
+        // + textHeight because the text is aligned to the bottom
+        const textY = pinY + textHeight / 2 + pinHeight / 2
+        // console.log(textHeight, pinHeight)
+        addSvgAttr(mapPinNum$, [
+          ['x', textX],
+          ['y', textY],
+          ['font-family', textFont],
+          ['font-size', textSize],
+          ['font-weight', textWeight],
+          ['class', 'map__pin__num'],
+        ])
+        pinW$.appendChild(mapPinNum$)
+      }
+
       locationTl[state] = gsap
         .timeline({ defaults: { ease: 'power4.inOut', duration: 0.6 }, paused: true })
         .to(location, { opacity: 1, duration: 0.3 }, 0)
-        .to(mapMarker$, { fill: hoverBlue, duration: 0.3 }, 0)
+        .to(mapMarkerFill$, { fill: hoverBlue, duration: 0.3 }, 0)
         .to(mapMarkerStroke$, { stroke: hoverBlue, duration: 0.3 }, 0)
+        .to(mapPinNum$, { opacity: 0 }, 0)
         .to(
           mapStateC$,
           {
