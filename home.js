@@ -57,25 +57,8 @@ export default function home() {
       const mapState$ = sel('#' + state)
       const mapStateC$ = mapState$?.querySelector('.map__state-in')
       const mapStateW$ = mapState$?.querySelector('.map__state')
-      const mapMarkerFill$ = mapState$?.querySelector('.map__state__fill')
 
-      if (!mapMarkerFill$) return
-      const mapMarkerStroke$ = mapState$?.querySelector('.map__state__stroke')
-
-      const markerPosition = mapMarkerFill$?.getBoundingClientRect().x - mapPosition.x
-      const xShift = ((markerPosition - mapWidth / 2) / mapWidth) * 50
-      const yShift = -10
-      // read and assign css variable to color
-
-      if (markerPosition > mapWidth / 2) {
-        location.classList.add('is--left')
-      }
-      location.style.left = ((markerPosition + markerRadius + xShift) / mapWidth) * 100 + '%'
-      location.style.top = mapMarkerFill$?.getBoundingClientRect().y + markerRadius - mapPosition.y + yShift + 'px'
-      const line$ = location.querySelector('.map__line path')
-      line$.setAttribute('d', `M0 100L150 10H${location.getBoundingClientRect().width}`)
-      const lineLength = line$.getTotalLength()
-
+      /*
       // add number of the V dots
       const pinW$ = mapMarkerFill$?.parentElement
       // const pinW$ = mapState$.querySelector('.map__state__marker')
@@ -109,40 +92,13 @@ export default function home() {
         ])
         pinW$.appendChild(mapPinNum$)
       }
-
-      locationTl[state] = gsap
-        .timeline({ defaults: { ease: 'power4.inOut', duration: 0.6 }, paused: true })
-        .to(location, { opacity: 1, duration: 0.3 }, 0)
-        .to(mapMarkerFill$, { fill: hoverBlue, duration: 0.3 }, 0)
-        .to(mapMarkerStroke$, { stroke: hoverBlue, duration: 0.3 }, 0)
-        .to(mapPinNum$, { opacity: 0 }, 0)
-        .to(
-          mapStateC$,
-          {
-            x: xShift,
-            y: yShift,
-            scale: 1.1,
-            filter: 'drop-shadow(0px 40px 20px rgba(46, 83, 127, 0.25))',
-            transformOrigin: 'center',
-          },
-          0
-        )
-        .to(mapStateW$, { fill: '#1999F7' }, 0)
-        // .to(mapStateW$, { y: -10, fill: 'var(--base-color-brand--blue)' }, 0)
-        .from(location.querySelector('.map__location__info'), { y: 30, ease: 'power2.out' }, 0)
-        .fromTo(
-          line$,
-          {
-            strokeDashoffset: 0, // where is starts
-            strokeDasharray: 0 + ' ' + lineLength, // dash length and gap length
-          },
-          { strokeDashoffset: 0, strokeDasharray: lineLength + ' ' + lineLength, duration: 0.3 },
-          0.3
-        )
+      */
 
       const dot$a = mapState$?.querySelectorAll('.map__pin')
       const dotBg$a = mapState$?.querySelectorAll('.map__pin__bg')
       const dotStagger = 1
+      let totalMw = 0
+
       if (dot$a?.length > 0) {
         gsap.set(dot$a, { opacity: 0 })
 
@@ -158,6 +114,7 @@ export default function home() {
           animation: dotTl,
         })
         let dotShiftI = 0
+
         dot$a.forEach((dot, i) => {
           dot.style.pointerEvents = 'auto'
           const pinBb = dot.querySelector('.map__pin__bg').getBBox()
@@ -168,6 +125,7 @@ export default function home() {
           const text = document.createElementNS(svgNs, 'text')
           dotShiftI += i
           const textContent = mwArr[dotShiftI] + 'MW'
+          totalMw += mwArr[dotShiftI]
           text.textContent = textContent
           const textSize = '1rem'
           const textFont = 'sans-serif'
@@ -228,6 +186,65 @@ export default function home() {
           // }
         })
       }
+
+      const mapMarkerNum$ = location.querySelector('.map__mw--num')
+      if (mapMarkerNum$) {
+        location.querySelector('.map__mw:not(.map__mw--num)').remove()
+        mapMarkerNum$.textContent = totalMw + ' MW'
+      }
+
+      const mapMarkerFill$ = mapState$?.querySelector('.map__state__fill')
+      if (!mapMarkerFill$) return
+      const mapMarkerStroke$ = mapState$?.querySelector('.map__state__stroke')
+
+      const markerPosition = mapMarkerFill$?.getBoundingClientRect().x - mapPosition.x
+      const xShift = ((markerPosition - mapWidth / 2) / mapWidth) * 50
+      const yShift = -10
+      // read and assign css variable to color
+
+      if (markerPosition > mapWidth / 2) {
+        location.classList.add('is--left')
+      }
+      location.style.left = ((markerPosition + markerRadius + xShift) / mapWidth) * 100 + '%'
+      location.style.top = mapMarkerFill$?.getBoundingClientRect().y + markerRadius - mapPosition.y + yShift + 'px'
+
+      const line$ = location.querySelector('.map__line path')
+      line$.setAttribute('d', `M0 100L150 10H${location.getBoundingClientRect().width}`)
+      const lineLength = line$.getTotalLength()
+
+      // animate state on hover
+
+      locationTl[state] = gsap
+        .timeline({ defaults: { ease: 'power4.inOut', duration: 0.6 }, paused: true })
+        .to(location, { opacity: 1, duration: 0.3 }, 0)
+        .to(mapMarkerFill$, { fill: hoverBlue, duration: 0.3 }, 0)
+        .to(mapMarkerStroke$, { stroke: hoverBlue, duration: 0.3 }, 0)
+        // .to(mapPinNum$, { opacity: 0 }, 0)
+        .to(
+          mapStateC$,
+          {
+            x: xShift,
+            y: yShift,
+            scale: 1.1,
+            filter: 'drop-shadow(0px 40px 20px rgba(46, 83, 127, 0.25))',
+            transformOrigin: 'center',
+          },
+          0
+        )
+        .to(mapStateW$, { fill: '#1999F7' }, 0)
+        // .to(mapStateW$, { y: -10, fill: 'var(--base-color-brand--blue)' }, 0)
+        .from(location.querySelector('.map__location__info'), { y: 30, ease: 'power2.out' }, 0)
+        .fromTo(
+          line$,
+          {
+            strokeDashoffset: 0, // where is starts
+            strokeDasharray: 0 + ' ' + lineLength, // dash length and gap length
+          },
+          { strokeDashoffset: 0, strokeDasharray: lineLength + ' ' + lineLength, duration: 0.3 },
+          0.3
+        )
+
+      console.log(state, totalMw)
     })
   })
   // mapLocationW$.querySelector('.location__info-slider').replaceChildren(fragment)
