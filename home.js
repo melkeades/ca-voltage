@@ -190,7 +190,9 @@ export default function home() {
       const mapMarkerNum$ = location.querySelector('.map__mw--num')
       if (mapMarkerNum$) {
         location.querySelector('.map__mw:not(.map__mw--num)').remove()
-        mapMarkerNum$.textContent = totalMw + ' MW'
+        const suffix = totalMw >= 1000 ? 'GW' : 'MW'
+        totalMw = totalMw >= 1000 ? totalMw / 1000 : totalMw
+        mapMarkerNum$.textContent = totalMw + ' ' + suffix
       }
 
       const mapMarkerFill$ = mapState$?.querySelector('.map__state__fill')
